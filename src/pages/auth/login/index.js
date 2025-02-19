@@ -36,6 +36,7 @@ export default function Login() {
             return 'Success Login';
           },
           error: (err) => {
+            console.log(err)
             return err.response?.data?.message || 'Something went wrong';
           },
         });
