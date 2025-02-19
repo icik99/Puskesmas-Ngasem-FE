@@ -24,10 +24,8 @@ const api = withSessionRoute(async (req, res) => {
         await req.session.save();
         return res.status(200).json(_data?.results?.data?.user);
       } catch (error) {
-        const message = error?.response?.data?.message;
-        const status = error?.response?.data?.status;
 
-        return res.status(status).send({ message, status });
+        return res.status(500).send({ message: 'Something went wrong' });
       }
     }
     default: {
