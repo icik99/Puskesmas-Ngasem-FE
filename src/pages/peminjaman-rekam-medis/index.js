@@ -45,30 +45,27 @@ export default function PeminjamanRekamMedis({
       accessorKey: 'TanggalBerobat',
       cell: ({ row }) => (
         <p>
-          {moment(row.original.TanggalBerobat).format(
-            'DD MMMM YYYY | HH:MM'
-          )} WIB
+          {moment(row.original.TanggalBerobat).format('DD MMMM YYYY | HH:MM')}{' '}
+          WIB
         </p>
       ),
     },
     { header: 'Diagnosa Akhir', accessorKey: 'DiagnosaAkhir' },
     { header: 'Pengobatan / Tindakan', accessorKey: 'Pengobatan' },
-    { header: 'Keadaan Waktu Keluar RS', accessorKey: 'KeadaanWaktuKeluarRS' },
+    { header: 'Keadaan Waktu Keluar Puskesmas', accessorKey: 'KeadaanWaktuKeluarRS' },
     {
       header: 'Status Peminjaman',
       accessorKey: 'StatusPeminjaman',
       cell: ({ row }) => {
         const status = row.original.StatusPeminjaman;
 
-        // Determine the display text based on the status
         const displayText =
-          status === 'DIPINJAM' ? 'DIPINJAM' : 'TERLAMBAT DIKEMBALIKAN';
+          status === 'DIPINJAM' ? 'DIPINJAM' : 'TERLAMBATDIKEMBALIKAN ';
 
-        // Determine the Tailwind CSS classes based on the status
         const cellClass =
           status === 'DIPINJAM'
-            ? 'bg-yellow-500 text-black py-3 rounded w-full text-center' // Yellow background for "Dipinjam"
-            : 'bg-red-500 text-black py-3 rounded w-full text-center'; // Red background for other statuses
+            ? 'bg-yellow-500 text-black py-3 rounded w-full text-center'
+            : 'bg-red-500 text-black py-3 rounded w-full text-center';
 
         return <p className={cellClass}>{displayText}</p>;
       },
@@ -245,6 +242,10 @@ export default function PeminjamanRekamMedis({
       const res = await axios.get(
         `/api/peminjaman-rekam-medis/get-id?id=${id}`
       );
+      console.log(
+        res.data.data.results.data.RiwayatPasiens.statusPeminjaman,
+        'resgetbyid'
+      );
       formStatus.setFieldValue(
         'statusPeminjaman',
         res.data.data.results.data.RiwayatPasiens.statusPeminjaman
@@ -394,14 +395,14 @@ export default function PeminjamanRekamMedis({
                   formik.resetForm();
                 }}
               >
-                Cancel
+                Batal
               </button>
               <button
                 className="rounded-[5px] border bg-[#072B2E] py-[7px] px-[38px] text-white font-medium"
                 type="submit"
                 onClick={formik.handleSubmit}
               >
-                Add
+                Tambah
               </button>
             </div>
           </>
@@ -518,14 +519,14 @@ export default function PeminjamanRekamMedis({
                   formik.resetForm();
                 }}
               >
-                Cancel
+                Batal
               </button>
               <button
                 className="rounded-[5px] border bg-[#072B2E] py-[7px] px-[38px] text-white font-medium"
                 type="submit"
                 onClick={formik.handleSubmit}
               >
-                Add
+                Simpan
               </button>
             </div>
           </>
@@ -547,7 +548,7 @@ export default function PeminjamanRekamMedis({
                   Status
                 </h1>
                 <select
-                  name="status"
+                  name="statusPeminjaman"
                   onChange={formStatus.handleChange}
                   onBlur={formStatus.handleBlur}
                   value={formStatus.values.statusPeminjaman}
@@ -556,7 +557,7 @@ export default function PeminjamanRekamMedis({
                   <option value="">Pilih Status...</option>
                   <option value="TERSEDIA">TERSEDIA</option>
                   <option value="DIPINJAM">DIPINJAM</option>
-                  <option value="TerlambatDikembalikan">
+                  <option value="TERLAMBATDIKEMBALIKAN">
                     TERLAMBAT DIKEMBALIKAN
                   </option>
                 </select>
@@ -574,14 +575,14 @@ export default function PeminjamanRekamMedis({
                 variant="secondary"
                 onClick={() => setShowModalEditStatus(!showModalEditStatus)}
               >
-                Cancel
+                Batal
               </button>
               <button
                 className="rounded-[5px] border bg-[#072B2E] py-[7px] px-[38px] text-white font-medium"
                 type="submit"
                 onClick={formStatus.handleSubmit}
               >
-                Add
+                Simpan
               </button>
             </div>
           </>

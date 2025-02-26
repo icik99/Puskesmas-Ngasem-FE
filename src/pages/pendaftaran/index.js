@@ -100,7 +100,10 @@ export default function Pendaftaran({ user }) {
     },
     { header: 'Keluhan', accessorKey: 'lamaPenyakit' },
     { header: 'Diagnosa Akhir', accessorKey: 'diagnosaAkhir' },
-    { header: 'Keadaan Waktu Keluar RS', accessorKey: 'keadaanKeluarRS' },
+    {
+      header: 'Keadaan Waktu Keluar Puskesmas',
+      accessorKey: 'keadaanKeluarRS',
+    },
     {
       header: 'Aksi',
       cell: ({ row }) => (
@@ -413,7 +416,7 @@ export default function Pendaftaran({ user }) {
                   variant="secondary"
                   onClick={() => setShowModalDetail(!showModalDetail)}
                 >
-                  Close
+                  Tutup
                 </button>
                 <button
                   className="rounded-[5px] border bg-blue-700 py-[7px] px-[38px] text-white font-medium"
@@ -692,7 +695,7 @@ export default function Pendaftaran({ user }) {
                 variant="secondary"
                 onClick={() => setShowModalEdit(!showModalEdit)}
               >
-                Cancel
+                Batal
               </button>
               <button
                 className="rounded-[5px] border bg-[#072B2E] py-[7px] px-[38px] text-white font-medium"
@@ -968,7 +971,7 @@ export default function Pendaftaran({ user }) {
                 variant="secondary"
                 onClick={() => setShowModalAdd(!showModalAdd)}
               >
-                Cancel
+                Batal
               </button>
               <button
                 className="rounded-[5px] border bg-[#072B2E] py-[7px] px-[38px] text-white font-medium"

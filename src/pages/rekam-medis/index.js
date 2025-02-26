@@ -361,12 +361,12 @@ export default function Create({
           </div>
 
           <h1 className="mb-3 font-semibold text-lg border-b-2">
-            Keadaan Waktu Keluar RS
+            Keadaan Waktu Keluar Puskesmas
           </h1>
           <div className="w-full">
             <input
               name="keadaanKeluarRS"
-              placeholder="Keadaan Waktu Keluar RS..."
+              placeholder="Keadaan Waktu Keluar Puskesmas..."
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.keadaanKeluarRS}
@@ -421,7 +421,7 @@ export default function Create({
             variant="secondary"
             onClick={() => router.push('/pendaftaran')}
           >
-            Cancel
+            Batal
           </button>
           <button
             className="rounded-[5px] border bg-[#072B2E] py-[7px] px-[38px] text-white font-medium"

@@ -248,7 +248,7 @@ export default function UserManagement({ user }) {
       <MetaHead title={'User Management | Puskesmas Ngasem'} />
       <Modal
         activeModal={showModalAdd}
-        title={'Add User'}
+        title={'Tambah User'}
         buttonClose={() => setShowModalAdd(!showModalAdd)}
         width={'1000px'}
         content={
@@ -403,14 +403,14 @@ export default function UserManagement({ user }) {
                 variant="secondary"
                 onClick={() => setShowModalAdd(!showModalAdd)}
               >
-                Cancel
+                Batal
               </button>
               <button
                 className="rounded-[5px] border bg-[#072B2E] py-[7px] px-[38px] text-white font-medium"
                 type="submit"
                 onClick={formik.handleSubmit}
               >
-                Add
+                Tambah
               </button>
             </div>
           </>
@@ -574,14 +574,14 @@ export default function UserManagement({ user }) {
                 variant="secondary"
                 onClick={() => setShowModalEdit(!showModalEdit)}
               >
-                Cancel
+                Batal
               </button>
               <button
                 className="rounded-[5px] border bg-[#072B2E] py-[7px] px-[38px] text-white font-medium"
                 type="submit"
                 onClick={formik.handleSubmit}
               >
-                Edit
+                Simpan
               </button>
             </div>
           </>
@@ -602,7 +602,7 @@ export default function UserManagement({ user }) {
           setSearch={setSearchUserManagement}
           debouncedFetchData={debouncedFetchDataUserManagement}
           showAddButton={true}
-          tittleAddButton={'Add User'}
+          tittleAddButton={'Tambah User'}
           actionAddButton={() => setShowModalAdd(!showModalAdd)}
           showSearchBar={true}
         />

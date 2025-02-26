@@ -96,7 +96,7 @@ export default function DetailRekamMedis({ listRekamMedis }) {
             </tr>
             <tr>
               <td className="border px-4 py-2 font-semibold">
-                Keadaan Waktu Keluar RS
+                Keadaan Waktu Keluar Puskesmas
               </td>
               <td className="border px-4 py-2">
                 {listRekamMedis.keadaanKeluarRS}

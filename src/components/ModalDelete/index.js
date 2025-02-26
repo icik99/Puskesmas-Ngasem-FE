@@ -6,7 +6,9 @@ import { Button } from '../ui/button';
 const ModalDelete = ({ activeModal, buttonClose, submitButton }) => {
   return (
     <div
-      className={`${activeModal ? 'translate-y-0' : '-translate-y-[2000px]'} transition-all duration-1000 ease-in-out fixed left-0 top-0 z-50`}
+      className={`${
+        activeModal ? 'translate-y-0' : '-translate-y-[2000px]'
+      } transition-all duration-1000 ease-in-out fixed left-0 top-0 z-50`}
     >
       <div className="h-screen w-screen bg-black backdrop-blur-sm bg-opacity-50 overflow-hidden flex items-center justify-center p-10">
         <div
@@ -29,7 +31,7 @@ const ModalDelete = ({ activeModal, buttonClose, submitButton }) => {
                 onClick={buttonClose}
                 className=" text-sm"
               >
-                Cancel
+                Batal
               </Button>
               <Button onClick={submitButton} className="bg-[#072B2E] text-sm">
                 Delete
