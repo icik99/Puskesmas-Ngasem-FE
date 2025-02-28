@@ -26,6 +26,7 @@ export default function AnalisisRekamMedis({ user }) {
     setSearch: setSearchAnalisisRekamMedis,
     debouncedFetchData: debouncedFetchDataAnalisisRekamMedis,
   } = useFetchData('/api/analisis-rekam-medis/get');
+  console.log(dataAnalisisRekamMedis)
   const kolomAnalisisRekamMedis = [
     {
       header: 'No.',
@@ -46,7 +47,7 @@ export default function AnalisisRekamMedis({ user }) {
         <p>{moment(row.original.createdAt).format('DD-MM-YYYY')}</p>
       ),
     },
-    { header: 'Nama Pasien', accessorKey: 'namaPasien' },
+    { header: 'Nama Pasien', accessorKey: 'Pasiens.namaLengkap' },
     { header: 'Keluhan', accessorKey: 'lamaPenyakit' },
     {
       header: 'Aksi',
