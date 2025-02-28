@@ -60,11 +60,13 @@ export default function PeminjamanRekamMedis({
         const status = row.original.StatusPeminjaman;
 
         const displayText =
-          status === 'DIPINJAM' ? 'DIPINJAM' : 'TERLAMBATDIKEMBALIKAN ';
+          status === 'DIPINJAM' ? 'DIPINJAM' : status === 'TERSEDIA' ? 'TERSEDIA' : 'TERLAMBATDIKEMBALIKAN ';
 
         const cellClass =
           status === 'DIPINJAM'
             ? 'bg-yellow-500 text-black py-3 rounded w-full text-center'
+          : status === 'TERSEDIA'
+            ? 'bg-green-500 text-black py-3 rounded w-full text-center'
             : 'bg-red-500 text-black py-3 rounded w-full text-center';
 
         return <p className={cellClass}>{displayText}</p>;
@@ -83,7 +85,7 @@ export default function PeminjamanRekamMedis({
             Edit Data
           </button>
           <button
-            onClick={() => openModalEditStatus(row.original.id)}
+            onClick={() => openModalEditStatus(row.original.id, row.original.idRekamMedis)}
             className="flex items-center gap-1 px-4 py-2 text-white bg-green-500 border border-transparent rounded-md hover:bg-green-600 transition duration-200 ease-in-out"
           >
             <BiSolidPencil className="text-lg" />
@@ -197,7 +199,7 @@ export default function PeminjamanRekamMedis({
         {
           loading: 'Processing...',
           success: (res) => {
-            setShowModalAdd(!showModalAdd);
+            setShowModalEditStatus(!showModalEditStatus);
             formik.resetForm();
             setRefresh((prev) => !prev);
             return res.data || 'Sukses Update Status Peminjaman';
@@ -235,12 +237,12 @@ export default function PeminjamanRekamMedis({
     } catch (error) {}
   };
 
-  const openModalEditStatus = async (id) => {
-    setIdRekamMedis(id);
+  const openModalEditStatus = async (idPeminjaman, idRekamMedis) => {
+    setIdRekamMedis(idRekamMedis);
     setShowModalEditStatus(!showModalEditStatus);
     try {
       const res = await axios.get(
-        `/api/peminjaman-rekam-medis/get-id?id=${id}`
+        `/api/peminjaman-rekam-medis/get-id?id=${idPeminjaman}`
       );
       console.log(
         res.data.data.results.data.RiwayatPasiens.statusPeminjaman,
@@ -461,7 +463,7 @@ export default function PeminjamanRekamMedis({
                   {listRekamMedis.map((item, idx) => (
                     <option key={idx} value={item.id}>
                       {moment(item?.createdAt).locale('id').format('LL')} -{' '}
-                      {item?.pasien}
+                      {item?.namaPasien}
                     </option>
                   ))}
                 </select>
