@@ -5,6 +5,8 @@ import TablePagination from '@/components/TablePagination';
 import useFetchData from '@/hooks/useFetchData';
 import ClientRequest from '@/utils/clientApiService';
 import { withSession } from '@/utils/sessionWrapper';
+import socket from '@/utils/socket';
+import { notification } from 'antd';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import { toNumber } from 'lodash';
@@ -17,6 +19,7 @@ export default function PeminjamanRekamMedis({
   user,
   listRekamMedis,
   listDokter,
+  totalTerupdate,
 }) {
   const {
     data: dataPeminjamanRekamMedis,
@@ -41,18 +44,21 @@ export default function PeminjamanRekamMedis({
     { header: 'Nama Pasien', accessorKey: 'NamaPasien' },
     { header: 'No. RM Pasien', accessorKey: 'NoRMPasien' },
     {
-      header: 'Tanggal Peminjaman',
-      accessorKey: 'TanggalBerobat',
+      header: 'Tanggal Dikembalikan',
+      accessorKey: 'tanggalDikembalikan',
       cell: ({ row }) => (
         <p>
-          {moment(row.original.TanggalBerobat).format('DD MMMM YYYY | HH:MM')}{' '}
+          {moment(row.original.tanggalDikembalikan).format('DD MMMM YYYY | HH:MM')}{' '}
           WIB
         </p>
       ),
     },
     { header: 'Diagnosa Akhir', accessorKey: 'DiagnosaAkhir' },
     { header: 'Pengobatan / Tindakan', accessorKey: 'Pengobatan' },
-    { header: 'Keadaan Waktu Keluar Puskesmas', accessorKey: 'KeadaanWaktuKeluarRS' },
+    {
+      header: 'Keadaan Waktu Keluar Puskesmas',
+      accessorKey: 'KeadaanWaktuKeluarRS',
+    },
     {
       header: 'Status Peminjaman',
       accessorKey: 'StatusPeminjaman',
@@ -60,12 +66,16 @@ export default function PeminjamanRekamMedis({
         const status = row.original.StatusPeminjaman;
 
         const displayText =
-          status === 'DIPINJAM' ? 'DIPINJAM' : status === 'TERSEDIA' ? 'TERSEDIA' : 'TERLAMBATDIKEMBALIKAN ';
+          status === 'DIPINJAM'
+            ? 'DIPINJAM'
+            : status === 'TERSEDIA'
+            ? 'TERSEDIA'
+            : 'TERLAMBATDIKEMBALIKAN ';
 
         const cellClass =
           status === 'DIPINJAM'
             ? 'bg-yellow-500 text-black py-3 rounded w-full text-center'
-          : status === 'TERSEDIA'
+            : status === 'TERSEDIA'
             ? 'bg-green-500 text-black py-3 rounded w-full text-center'
             : 'bg-red-500 text-black py-3 rounded w-full text-center';
 
@@ -85,7 +95,9 @@ export default function PeminjamanRekamMedis({
             Edit Data
           </button>
           <button
-            onClick={() => openModalEditStatus(row.original.id, row.original.idRekamMedis)}
+            onClick={() =>
+              openModalEditStatus(row.original.id, row.original.idRekamMedis)
+            }
             className="flex items-center gap-1 px-4 py-2 text-white bg-green-500 border border-transparent rounded-md hover:bg-green-600 transition duration-200 ease-in-out"
           >
             <BiSolidPencil className="text-lg" />
@@ -101,6 +113,36 @@ export default function PeminjamanRekamMedis({
   const [showModalDelete, setShowModalDelete] = useState(false);
   const [idRekamMedis, setIdRekamMedis] = useState('');
   const [refresh, setRefresh] = useState(false);
+  const [dataKeterlambatan, setDataKeterlambatan] = useState();
+  const [hasNotified, setHasNotified] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
+
+  useEffect(() => {
+    if (totalTerupdate > 0) {
+      api.info({
+        message: `Peringatan Keterlambatan`,
+        description: `Terdapat ${totalTerupdate} rekam medis terlambat dikembalikan!`,
+        duration: 5, // Notifikasi tidak akan hilang sendiri
+      });
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   socket.on('notification', (msg) => {
+  //     api.warning({
+  //       message: msg.message,
+  //       description: `Detail ID: ${msg.details.join(', ')}`,
+  //     });
+  //   });
+
+  //   socket.on('connect_error', (error) => {
+  //     console.error('Socket connection error:', error);
+  //   });
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -175,9 +217,10 @@ export default function PeminjamanRekamMedis({
   const formStatus = useFormik({
     initialValues: {
       statusPeminjaman: '',
+      tanggalDikembalikan: '',
     },
     validate: (values) => {
-      const requiredFields = ['statusPeminjaman'];
+      const requiredFields = ['statusPeminjaman', 'tanggalDikembalikan'];
       const errors = Object.fromEntries(
         requiredFields
           .filter(
@@ -188,6 +231,7 @@ export default function PeminjamanRekamMedis({
           )
           .map((field) => [field, `Field wajib diisi`])
       );
+      console.log(errors);
       return errors;
     },
     onSubmit: async (values) => {
@@ -244,13 +288,16 @@ export default function PeminjamanRekamMedis({
       const res = await axios.get(
         `/api/peminjaman-rekam-medis/get-id?id=${idPeminjaman}`
       );
-      console.log(
-        res.data.data.results.data.RiwayatPasiens.statusPeminjaman,
-        'resgetbyid'
-      );
+      console.log(res.data.data.results.data, 'resgetbyid');
       formStatus.setFieldValue(
         'statusPeminjaman',
         res.data.data.results.data.RiwayatPasiens.statusPeminjaman
+      );
+      formStatus.setFieldValue(
+        'tanggalDikembalikan',
+        moment(res.data.data.results.data.tanggalDikembalikan).format(
+          'YYYY-MM-DDTHH:mm'
+        )
       );
     } catch (error) {}
   };
@@ -285,6 +332,8 @@ export default function PeminjamanRekamMedis({
 
   return (
     <div>
+      {contextHolder}
+
       <MetaHead title={'Peminjaman Rekam Medis | Puskesmas Ngasem'} />
       <Modal
         activeModal={showModalAdd}
@@ -545,30 +594,53 @@ export default function PeminjamanRekamMedis({
               onSubmit={formStatus.handleSubmit}
               className="px-4 md:px-[100px] py-[20px] space-y-[20px]"
             >
-              <div className="w-full">
-                <h1 className="font-medium text-[#B9B9B9] text-sm mb-[4px]">
-                  Status
-                </h1>
-                <select
-                  name="statusPeminjaman"
-                  onChange={formStatus.handleChange}
-                  onBlur={formStatus.handleBlur}
-                  value={formStatus.values.statusPeminjaman}
-                  className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
-                >
-                  <option value="">Pilih Status...</option>
-                  <option value="TERSEDIA">TERSEDIA</option>
-                  <option value="DIPINJAM">DIPINJAM</option>
-                  <option value="TERLAMBATDIKEMBALIKAN">
-                    TERLAMBAT DIKEMBALIKAN
-                  </option>
-                </select>
-                {formStatus.touched.statusPeminjaman &&
-                  formStatus.errors.statusPeminjaman && (
-                    <p className="text-xs font-medium text-red-500 ml-1">
-                      * {formStatus.errors.statusPeminjaman}
-                    </p>
-                  )}
+              <div className="w-full space-y-5">
+                <div className="w-full">
+                  <h1 className="font-medium text-[#B9B9B9] text-sm mb-[4px]">
+                    Status
+                  </h1>
+                  <select
+                    name="statusPeminjaman"
+                    onChange={formStatus.handleChange}
+                    onBlur={formStatus.handleBlur}
+                    value={formStatus.values.statusPeminjaman}
+                    className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+                  >
+                    <option value="">Pilih Status...</option>
+                    <option value="TERSEDIA">TERSEDIA</option>
+                    <option value="DIPINJAM">DIPINJAM</option>
+                    <option value="TERLAMBATDIKEMBALIKAN">
+                      TERLAMBAT DIKEMBALIKAN
+                    </option>
+                  </select>
+                  {formStatus.touched.statusPeminjaman &&
+                    formStatus.errors.statusPeminjaman && (
+                      <p className="text-xs font-medium text-red-500 ml-1">
+                        * {formStatus.errors.statusPeminjaman}
+                      </p>
+                    )}
+                </div>
+                {formStatus.values.statusPeminjaman === 'DIPINJAM' && (
+                  <div className="w-full">
+                    <h1 className="font-medium text-[#B9B9B9] text-sm mb-[4px]">
+                      Tanggal Dikembalikan
+                    </h1>
+                    <input
+                      name="tanggalDikembalikan"
+                      onChange={formStatus.handleChange}
+                      onBlur={formStatus.handleBlur}
+                      type="datetime-local"
+                      value={formStatus.values.tanggalDikembalikan}
+                      className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+                    />
+                    {formStatus.touched.tanggalDikembalikan &&
+                      formStatus.errors.tanggalDikembalikan && (
+                        <p className="text-xs font-medium text-red-500 ml-1">
+                          * {formStatus.errors.tanggalDikembalikan}
+                        </p>
+                      )}
+                  </div>
+                )}
               </div>
             </form>
             <div className="flex items-center justify-end gap-[16px] py-[16px] px-4 md:px-[100px]">
@@ -591,6 +663,15 @@ export default function PeminjamanRekamMedis({
         }
       />
       <Navbar tittlePage={'Peminjaman Rekam Medis'} />
+      <div className="flex justify-end">
+        <button
+          onClick={() => window.location.reload()}
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition mb-3"
+        >
+          Cek Rekam Medis Terlambat
+        </button>
+      </div>
+
       <div className="mb-10">
         <TablePagination
           data={dataPeminjamanRekamMedis}
@@ -624,10 +705,18 @@ export const getServerSideProps = withSession(async ({ req }) => {
 
   let dataRekamMedis = [];
   let dataDokter = [];
+  let checkStatusData = { totalTerupdate: 0 };
 
   try {
     const res = await ClientRequest.GetRekamMedis(accessToken, '', 10000, 1);
     dataRekamMedis = res.data.results.data || [];
+  } catch (error) {
+    console.error('Error fetching Rekam Medis data');
+  }
+
+  try {
+    const checkRes = await ClientRequest.CheckRekamMedisStatus(accessToken);
+    checkStatusData = checkRes.data || { totalTerupdate: 0 };
   } catch (error) {
     console.error('Error fetching Rekam Medis data');
   }
@@ -644,6 +733,7 @@ export const getServerSideProps = withSession(async ({ req }) => {
       user,
       listRekamMedis: dataRekamMedis || [],
       listDokter: dataDokter || [],
+      totalTerupdate: checkStatusData.totalTerupdate || 0,
     },
   };
 });

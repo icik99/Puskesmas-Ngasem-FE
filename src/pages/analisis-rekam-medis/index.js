@@ -26,7 +26,6 @@ export default function AnalisisRekamMedis({ user }) {
     setSearch: setSearchAnalisisRekamMedis,
     debouncedFetchData: debouncedFetchDataAnalisisRekamMedis,
   } = useFetchData('/api/analisis-rekam-medis/get');
-  console.log(dataAnalisisRekamMedis)
   const kolomAnalisisRekamMedis = [
     {
       header: 'No.',

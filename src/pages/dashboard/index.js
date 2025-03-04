@@ -20,42 +20,33 @@ import {
   FaClock,
   FaUsers,
 } from 'react-icons/fa';
+import axios from 'axios';
 
 export default function Dashboard({ listCountDashboard, totalTerupdate }) {
   const [data, setData] = useState(null);
   const [api, contextHolder] = notification.useNotification();
+  const [dataKeterlambatan, setDataKeterlambatan] = useState();
+  const getDataKeterlambatan = async () => {
+    try {
+      const res = await axios.get('/api/cek-keterlambatan/get');
+      setDataKeterlambatan(res.data.data);
+      console.log(res.data.data);
+    } catch (error) {
+      console.error('Failed Fetching Data');
+    }
+  };
 
   useEffect(() => {
-    if (listCountDashboard) {
-      setData(listCountDashboard);
-    }
-    if (totalTerupdate > 0) {
-      api.info({
-        message: `Peringatan Keterlambatan`,
-        description: `Terdapat ${totalTerupdate} rekam medis terlambat dikembalikan!`,
-        duration: 0, // Notifikasi tidak akan hilang sendiri
-      });
-    }
-  }, [listCountDashboard, totalTerupdate]);
+    setData(listCountDashboard)
+      if (totalTerupdate > 0) {
+        api.info({
+          message: `Peringatan Keterlambatan`,
+          description: `Terdapat ${totalTerupdate} rekam medis terlambat dikembalikan!`,
+          duration: 5, // Notifikasi tidak akan hilang sendiri
+        });
+      }
+    }, []);
 
-  useEffect(() => {
-
-    socket.on('notification', (msg) => {
-      api.warning({
-        message: msg.message,
-        description: `Detail ID: ${msg.details.join(', ')}`,
-      });
-    });
-
-    socket.on('connect_error', (error) => {
-      console.error('Socket connection error:', error);
-    });
-
-    return () => {
-      // No need to disconnect here since we are using a singleton instance
-      socket.disconnect(); // Comment this out
-    };
-  }, []);
 
   if (!data) return <p className="text-center text-gray-600">Loading...</p>;
 
