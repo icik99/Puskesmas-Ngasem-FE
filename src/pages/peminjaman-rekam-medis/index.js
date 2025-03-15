@@ -763,7 +763,7 @@ export default function PeminjamanRekamMedis({
           Cek Rekam Medis Terlambat
         </button>
         <button
-          onClick={() => router.push('/log-activity')}
+          onClick={() => router.push('/peminjaman-rekam-medis/log-activity')}
           className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition mb-3"
         >
           Buku Ekspedisi
