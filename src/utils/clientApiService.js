@@ -353,6 +353,16 @@ class ClientRequest {
     });
   };
 
+  static GetLogActivity = (token) => {
+    const path = `logActivity/get-log-activity`;
+    return request(`${this.urlAPI}${path}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  };
+
   static GetAnalisisRekamMedis = (token, keyword, limit, page) => {
     const path = `rekamMedis/analisis-rekam-medis`;
     return request(`${this.urlAPI}${path}`, {

@@ -38,6 +38,12 @@ const dataRekap = [
     api: '/api/peminjaman-rekam-medis/get',
     fileName: 'rekap_data_peminjaman_rekam_medis.xlsx',
   },
+  {
+    title: 'Rekap Data Buku Ekspedisi - Riwayat Peminjaman RM (excel)',
+    color: 'bg-gray-500',
+    api: '/api/log-activity/get',
+    fileName: 'buku_ekspedisi_peminjaman_rekam_medis.xlsx',
+  },
 ];
 
 export default function RekapData({ listCountDashboard }) {

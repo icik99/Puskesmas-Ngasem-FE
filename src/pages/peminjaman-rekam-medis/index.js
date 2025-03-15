@@ -11,6 +11,7 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import { toNumber } from 'lodash';
 import moment from 'moment';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { BiSolidPencil } from 'react-icons/bi';
@@ -28,6 +29,8 @@ export default function PeminjamanRekamMedis({
     setSearch: setSearchPeminjamanRekamMedis,
     debouncedFetchData: debouncedFetchDataPeminjamanRekamMedis,
   } = useFetchData('/api/peminjaman-rekam-medis/get');
+
+  console.log(dataPeminjamanRekamMedis);
   const kolomPeminjamanRekamMedis = [
     {
       header: 'No.',
@@ -44,11 +47,25 @@ export default function PeminjamanRekamMedis({
     { header: 'Nama Pasien', accessorKey: 'NamaPasien' },
     { header: 'No. RM Pasien', accessorKey: 'NoRMPasien' },
     {
+      header: 'Tanggal Peminjaman',
+      accessorKey: 'tanggalPeminjaman',
+      cell: ({ row }) => (
+        <p>
+          {moment(row.original.tanggalPeminjaman).format(
+            'DD MMMM YYYY | HH:MM'
+          )}{' '}
+          WIB
+        </p>
+      ),
+    },
+    {
       header: 'Tanggal Dikembalikan',
       accessorKey: 'tanggalDikembalikan',
       cell: ({ row }) => (
         <p>
-          {moment(row.original.tanggalDikembalikan).format('DD MMMM YYYY | HH:MM')}{' '}
+          {moment(row.original.tanggalDikembalikan).format(
+            'DD MMMM YYYY | HH:MM'
+          )}{' '}
           WIB
         </p>
       ),
@@ -116,6 +133,7 @@ export default function PeminjamanRekamMedis({
   const [dataKeterlambatan, setDataKeterlambatan] = useState();
   const [hasNotified, setHasNotified] = useState(false);
   const [api, contextHolder] = notification.useNotification();
+  const router = useRouter()
 
   useEffect(() => {
     if (totalTerupdate > 0) {
@@ -148,6 +166,7 @@ export default function PeminjamanRekamMedis({
     initialValues: {
       alasanPeminjaman: '',
       tanggalDikembalikan: '',
+      tanggalPeminjaman: '',
       Dokter: '',
       RekamMedis: '',
     },
@@ -155,9 +174,11 @@ export default function PeminjamanRekamMedis({
       const requiredFields = [
         'alasanPeminjaman',
         'tanggalDikembalikan',
+        'tanggalPeminjaman',
         'Dokter',
         'RekamMedis',
       ];
+
       const errors = Object.fromEntries(
         requiredFields
           .filter(
@@ -168,8 +189,28 @@ export default function PeminjamanRekamMedis({
           )
           .map((field) => [field, `Field wajib diisi`])
       );
+
+      // Validasi tanggalDikembalikan
+      if (values.tanggalPeminjaman && values.tanggalDikembalikan) {
+        const tanggalPeminjaman = new Date(values.tanggalPeminjaman);
+        const tanggalDikembalikan = new Date(values.tanggalDikembalikan);
+
+        // Hitung selisih dalam milidetik, lalu konversi ke hari
+        const selisihHari =
+          (tanggalDikembalikan - tanggalPeminjaman) / (1000 * 60 * 60 * 24);
+
+        if (selisihHari < 0) {
+          errors.tanggalDikembalikan =
+            'Tanggal pengembalian tidak boleh sebelum tanggal peminjaman';
+        } else if (selisihHari > 2) {
+          errors.tanggalDikembalikan =
+            'Tanggal pengembalian maksimal 2 hari dari tanggal peminjaman';
+        }
+      }
+      console.log(values)
       return errors;
     },
+
     onSubmit: async (values) => {
       if (showModalAdd) {
         try {
@@ -273,6 +314,13 @@ export default function PeminjamanRekamMedis({
           'YYYY-MM-DDTHH:mm'
         )
       );
+
+      formik.setFieldValue(
+        'tanggalPeminjaman',
+        moment(res.data.data.results.data.tanggalPeminjaman).format(
+          'YYYY-MM-DDTHH:mm'
+        )
+      );
       formik.setFieldValue('Dokter', res.data.data.results.data.Dokters.id);
       formik.setFieldValue(
         'RekamMedis',
@@ -296,6 +344,12 @@ export default function PeminjamanRekamMedis({
       formStatus.setFieldValue(
         'tanggalDikembalikan',
         moment(res.data.data.results.data.tanggalDikembalikan).format(
+          'YYYY-MM-DDTHH:mm'
+        )
+      );
+      formStatus.setFieldValue(
+        'tanggalPeminjaman',
+        moment(res.data.data.results.data.tanggalPeminjaman).format(
           'YYYY-MM-DDTHH:mm'
         )
       );
@@ -397,6 +451,25 @@ export default function PeminjamanRekamMedis({
                     * {formik.errors.RekamMedis}
                   </p>
                 )}
+              </div>
+              <div className="w-full">
+                <h1 className="font-medium text-[#B9B9B9] text-sm mb-[4px]">
+                  Tanggal Peminjaman
+                </h1>
+                <input
+                  name="tanggalPeminjaman"
+                  type="datetime-local"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.tanggalPeminjaman}
+                  className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+                />
+                {formik.touched.tanggalPeminjaman &&
+                  formik.errors.tanggalPeminjaman && (
+                    <p className="text-xs font-medium text-red-500 ml-1">
+                      * {formik.errors.tanggalPeminjaman}
+                    </p>
+                  )}
               </div>
               <div className="w-full">
                 <h1 className="font-medium text-[#B9B9B9] text-sm mb-[4px]">
@@ -521,6 +594,25 @@ export default function PeminjamanRekamMedis({
                     * {formik.errors.RekamMedis}
                   </p>
                 )}
+              </div>
+              <div className="w-full">
+                <h1 className="font-medium text-[#B9B9B9] text-sm mb-[4px]">
+                  Tanggal Peminjaman
+                </h1>
+                <input
+                  name="tanggalPeminjaman"
+                  type="datetime-local"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.tanggalPeminjaman}
+                  className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+                />
+                {formik.touched.tanggalPeminjaman &&
+                  formik.errors.tanggalPeminjaman && (
+                    <p className="text-xs font-medium text-red-500 ml-1">
+                      * {formik.errors.tanggalPeminjaman}
+                    </p>
+                  )}
               </div>
               <div className="w-full">
                 <h1 className="font-medium text-[#B9B9B9] text-sm mb-[4px]">
@@ -663,12 +755,18 @@ export default function PeminjamanRekamMedis({
         }
       />
       <Navbar tittlePage={'Peminjaman Rekam Medis'} />
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-3">
         <button
           onClick={() => window.location.reload()}
           className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition mb-3"
         >
           Cek Rekam Medis Terlambat
+        </button>
+        <button
+          onClick={() => router.push('/log-activity')}
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition mb-3"
+        >
+          Buku Ekspedisi
         </button>
       </div>
 
