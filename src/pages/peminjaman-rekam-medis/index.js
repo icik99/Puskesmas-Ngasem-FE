@@ -87,7 +87,7 @@ export default function PeminjamanRekamMedis({
             ? 'DIPINJAM'
             : status === 'TERSEDIA'
             ? 'TERSEDIA'
-            : 'TERLAMBATDIKEMBALIKAN ';
+            : 'TERLAMBAT DIKEMBALIKAN ';
 
         const cellClass =
           status === 'DIPINJAM'
