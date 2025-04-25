@@ -11,8 +11,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { IoIosPeople, IoMdAnalytics } from 'react-icons/io';
 import { MdOutlinePersonalInjury } from 'react-icons/md';
-import { BsClipboard2DataFill } from "react-icons/bs";
-
+import { BsClipboard2DataFill } from 'react-icons/bs';
 
 export default function Layout({ children }) {
   const router = useRouter();
@@ -118,12 +117,14 @@ export default function Layout({ children }) {
                   {
                     href: '/analisis-rekam-medis',
                     label: 'Analisis RM',
-                    icon: <IoMdAnalytics  className="text-2xl text-blue-700" />,
+                    icon: <IoMdAnalytics className="text-2xl text-blue-700" />,
                   },
                   {
                     href: '/rekap-data',
                     label: 'Rekap Data',
-                    icon: <BsClipboard2DataFill   className="text-2xl text-blue-700" />,
+                    icon: (
+                      <BsClipboard2DataFill className="text-2xl text-blue-700" />
+                    ),
                   },
                 ].map((item) => (
                   <Link
@@ -167,7 +168,12 @@ export default function Layout({ children }) {
               />
             </header>
 
-            <div className="flex-1 bg-white shadow-md rounded-lg mt-4 p-4 lg:p-6">
+            <div className="flex-1 bg-white shadow-md rounded-lg mt-4 p-4 lg:p-6 relative overflow-hidden">
+              <Image
+                src={smallLogo}
+                alt="Watermark"
+                className="absolute opacity-10 w-96 h-auto right-4 bottom-4 pointer-events-none select-none"
+              />
               {children}
             </div>
           </main>

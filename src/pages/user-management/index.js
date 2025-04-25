@@ -181,7 +181,7 @@ export default function UserManagement({ user }) {
         res.data.data.results.data.password
       );
       formik.setFieldValue('role', res.data.data.results.data.role);
-      if (res.data.data.results.data.role === 'DOKTER') {
+      if (res.data.data.results.data.role === 'DOKTER' || res.data.data.results.data.role === 'PETUGAS') {
         setIsUserDokter(true);
         formik.setFieldValue('eTTD', res.data.data.results.data.eTTD);
         setTtdImage(handleImage(res.data.data.results.data.eTTD));
@@ -215,7 +215,7 @@ export default function UserManagement({ user }) {
   const handleRoleChange = (e) => {
     const selectedRole = e.target.value;
     formik.handleChange(e);
-    setIsUserDokter(selectedRole === 'DOKTER');
+    setIsUserDokter(selectedRole === 'DOKTER' || selectedRole === 'PETUGAS');
   };
 
   const handleImageUpload = (event) => {
@@ -373,7 +373,7 @@ export default function UserManagement({ user }) {
               {isUserDokter && (
                 <div className="w-full">
                   <h1 className="font-medium text-[#B9B9B9] text-sm mb-[4px]">
-                    Tanda Tangan Dokter
+                    Tanda Tangan
                   </h1>
                   <input
                     type="file"

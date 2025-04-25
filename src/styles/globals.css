@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    background: white;
+  }
+
+  .print-content {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    box-shadow: none !important;
+  }
+
+  .print\\:hidden {
+    display: none !important;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

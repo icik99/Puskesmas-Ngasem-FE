@@ -5,7 +5,6 @@ import Navbar from '@/components/Navbar';
 import Table from '@/components/Table';
 import TablePagination from '@/components/TablePagination';
 import useFetchData from '@/hooks/useFetchData';
-import ClientRequest from '@/utils/clientApiService';
 import { withSession } from '@/utils/sessionWrapper';
 import axios from 'axios';
 import { useFormik } from 'formik';
@@ -17,7 +16,8 @@ import toast from 'react-hot-toast';
 import { BiSolidPencil } from 'react-icons/bi';
 import { FaTrashAlt } from 'react-icons/fa';
 import { IoEye } from 'react-icons/io5';
-export default function Pendaftaran({ user }) {
+
+export default function KiupPasien({ user }) {
   const {
     data: dataPatient,
     pagination: paginationPatient,

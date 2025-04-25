@@ -419,6 +419,13 @@ export default function Create({
           <button
             className="rounded-[5px] border border-[#072B2E] py-[7px] px-[38px] text-black font-medium"
             variant="secondary"
+            onClick={() => router.push('/analisis-rekam-medis')}
+          >
+            Analisis Rekam Medis
+          </button>
+          <button
+            className="rounded-[5px] border border-[#072B2E] py-[7px] px-[38px] text-black font-medium"
+            variant="secondary"
             onClick={() => router.push('/pendaftaran')}
           >
             Batal
