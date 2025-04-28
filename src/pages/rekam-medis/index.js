@@ -16,43 +16,40 @@ export default function Create({
 }) {
   const router = useRouter();
   const idRekamMedis = router.query.id;
+  const idPasien = router.query.idPasien;
   const formik = useFormik({
     initialValues: {
       Dokter:
         user.role === 'DOKTER' && !idRekamMedis
           ? user.id
           : listRekamMedis.Dokter,
-      pasien: !idRekamMedis ? null : listRekamMedis.pasien,
+      pasien: !idRekamMedis ? idPasien : listRekamMedis.pasien,
       noRM: !idRekamMedis ? null : listRekamMedis.noRM,
-      lamaPenyakit: !idRekamMedis ? null : listRekamMedis.lamaPenyakit,
-      lain_lain: !idRekamMedis ? null : listRekamMedis.lain_lain,
-      waktuPermeriksaan: !idRekamMedis
+      tanggalKunjungan: !idRekamMedis ? null : listRekamMedis.tanggalKunjungan,
+      subjektif: !idRekamMedis ? null : listRekamMedis.subjektif,
+      ku: !idRekamMedis ? null : listRekamMedis.ku,
+      kt: !idRekamMedis ? null : listRekamMedis.kt,
+      rpd: !idRekamMedis ? null : listRekamMedis.rpd,
+      rpo: !idRekamMedis ? null : listRekamMedis.rpo,
+      rpk: !idRekamMedis ? null : listRekamMedis.rpk,
+      td: !idRekamMedis ? null : listRekamMedis.td,
+      hr: !idRekamMedis ? null : listRekamMedis.hr,
+      rr: !idRekamMedis ? null : listRekamMedis.rr,
+      t: !idRekamMedis ? null : listRekamMedis.t,
+      tb: !idRekamMedis ? null : listRekamMedis.tb,
+      bb: !idRekamMedis ? null : listRekamMedis.bb,
+      pemeriksaanFisik: !idRekamMedis ? null : listRekamMedis.pemeriksaanFisik,
+      catatanKeperawatan: !idRekamMedis
         ? null
-        : listRekamMedis.waktuPermeriksaan,
-      fisik: !idRekamMedis ? null : listRekamMedis.fisik,
-      lain_lainHasilPemeriksaan: !idRekamMedis
+        : listRekamMedis.catatanKeperawatan,
+      diagnosaPenyakit: !idRekamMedis ? null : listRekamMedis.diagnosaPenyakit,
+      therapy: !idRekamMedis ? null : listRekamMedis.therapy,
+      eso: !idRekamMedis ? null : listRekamMedis.eso,
+      rencanaPemeriksaanPenunjang: !idRekamMedis
         ? null
-        : listRekamMedis.lain_lainHasilPemeriksaan,
-      laboratorium: !idRekamMedis ? null : listRekamMedis.laboratorium,
-      radiologi: !idRekamMedis ? null : listRekamMedis.radiologi,
-      keadaanKeluarRS: !idRekamMedis ? null : listRekamMedis.keadaanKeluarRS,
-      prognosa: !idRekamMedis ? null : listRekamMedis.prognosa,
-      kapanPenyakitDahulu: !idRekamMedis
-        ? null
-        : listRekamMedis.kapanPenyakitDahulu,
-      pengobatan: !idRekamMedis ? null : listRekamMedis.pengobatan,
-      faktorEtimologi: !idRekamMedis ? null : listRekamMedis.faktorEtimologi,
-      diagnosaAkhir: !idRekamMedis ? null : listRekamMedis.diagnosaAkhir,
-      masalahDihadapi: !idRekamMedis ? null : listRekamMedis.masalahDihadapi,
-      konsultasi: !idRekamMedis ? null : listRekamMedis.konsultasi,
-      pengobatanTindakan: !idRekamMedis
-        ? null
-        : listRekamMedis.pengobatanTindakan,
-      perjalananPeyakit: !idRekamMedis
-        ? null
-        : listRekamMedis.perjalananPeyakit,
-      sebabMeninggal: !idRekamMedis ? null : listRekamMedis.sebabMeninggal,
-      usulTidakLanjut: !idRekamMedis ? null : listRekamMedis.usulTidakLanjut,
+        : listRekamMedis.rencanaPemeriksaanPenunjang,
+      Edukasi: !idRekamMedis ? null : listRekamMedis.Edukasi,
+      rencanaRujukan: !idRekamMedis ? null : listRekamMedis.rencanaRujukan,
     },
     onSubmit: async (values) => {
       if (!idRekamMedis) {
@@ -65,7 +62,8 @@ export default function Create({
               return res.data || 'Berhasil Membuat Rekam Medis';
             },
             error: (err) => {
-              return err.response?.data?.error || 'Something went wrong';
+              console.log(err);
+              return 'Something went wrong';
             },
           });
         } catch (error) {
@@ -110,10 +108,10 @@ export default function Create({
       <Navbar tittlePage={'Rekam Medis'} />
       <div className="w-full font-medium text-red-500">
         Semua kolom input disarankan untuk diisi. Tetapi jika ada bagian yang
-        tidak ingin / tidak perlu diisi, silakan biarkan field tersebut kosong .
+        tidak ingin / tidak perlu diisi, silakan biarkan field tersebut kosong.
       </div>
       <section>
-        <div className=" py-[20px] space-y-[20px]">
+        <div className="py-[20px] space-y-[20px]">
           <h1 className="mb-3 font-semibold text-lg border-b-2">
             Dokter yang Bertugas
           </h1>
@@ -165,251 +163,298 @@ export default function Create({
           </div>
 
           <h1 className="mb-3 font-semibold text-lg border-b-2">
-            Keluhan Utama
+            Tanggal Kunjungan
           </h1>
-          <div className="w-full space-y-2">
-            <h1 className="font-medium text-[#B9B9B9] text-sm">
-              Lama Penyakit
-            </h1>
+          <div className="w-full">
             <input
-              name="lamaPenyakit"
-              placeholder="Lama Penyakit..."
+              type="date"
+              name="tanggalKunjungan"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.lamaPenyakit}
-              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
-            />
-            <h1 className="font-medium text-[#B9B9B9] text-sm">Lain-lain</h1>
-            <textarea
-              rows={3}
-              name="lain_lain"
-              placeholder="Lain-lain..."
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.lain_lain}
+              value={formik.values.tanggalKunjungan}
               className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
             />
           </div>
 
           <h1 className="mb-3 font-semibold text-lg border-b-2">
-            Penyakit Dahulu
+            Subjektif (Keluhan Utama)
           </h1>
-          <div className="w-full space-y-2">
-            <h1 className="font-medium text-[#B9B9B9] text-sm">Kapan</h1>
-            <input
-              name="kapanPenyakitDahulu"
-              type="text"
-              placeholder="Kapan..."
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.kapanPenyakitDahulu}
-              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
-            />
-            <h1 className="font-medium text-[#B9B9B9] text-sm">Pengobatan</h1>
+          <div className="w-full">
             <textarea
               rows={3}
-              name="pengobatan"
-              placeholder="Pengobatan..."
+              name="subjektif"
+              placeholder="Keluhan utama pasien..."
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.pengobatan}
-              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
-            />
-
-            <h1 className="font-medium text-[#B9B9B9] text-sm">
-              Faktor Etimologi
-            </h1>
-            <textarea
-              rows={3}
-              name="faktorEtimologi"
-              placeholder="Faktor Etimologi..."
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.faktorEtimologi}
+              value={formik.values.subjektif}
               className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
             />
           </div>
 
           <h1 className="mb-3 font-semibold text-lg border-b-2">
-            Hasil Pemeriksaan
+            Keadaan Umum (KU)
           </h1>
-          <div className="w-full space-y-2">
-            <h1 className="font-medium text-[#B9B9B9] text-sm">
-              Waktu Pemeriksaan
-            </h1>
+          <div className="w-full">
             <textarea
               rows={3}
-              name="waktuPermeriksaan"
-              placeholder="Waktu Pemeriksaan..."
+              name="ku"
+              placeholder="Keadaan umum pasien..."
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.waktuPermeriksaan}
-              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
-            />
-            <h1 className="font-medium text-[#B9B9B9] text-sm">Fisik</h1>
-            <textarea
-              rows={3}
-              name="fisik"
-              placeholder="Fisik..."
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.fisik}
-              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
-            />
-
-            <h1 className="font-medium text-[#B9B9B9] text-sm">Lain-lain</h1>
-            <textarea
-              rows={3}
-              name="lain_lainHasilPemeriksaan"
-              placeholder="Lain-lain..."
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.lain_lainHasilPemeriksaan}
-              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
-            />
-            <h1 className="font-medium text-[#B9B9B9] text-sm">Laboratorium</h1>
-            <textarea
-              rows={3}
-              name="laboratorium"
-              placeholder="Laboratorium..."
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.laboratorium}
-              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
-            />
-            <h1 className="font-medium text-[#B9B9B9] text-sm">Radiologi</h1>
-            <textarea
-              rows={3}
-              name="radiologi"
-              placeholder="Radiologi..."
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.radiologi}
+              value={formik.values.ku}
               className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
             />
           </div>
 
           <h1 className="mb-3 font-semibold text-lg border-b-2">
-            {' '}
-            Diagnosa Akhir{' '}
-          </h1>
-          <div className="w-full">
-            <input
-              name="diagnosaAkhir"
-              placeholder="Diagnosa Akhir..."
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.diagnosaAkhir}
-              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
-            />
-          </div>
-
-          <h1 className="mb-3 font-semibold text-lg border-b-2">
-            {' '}
-            Masalah yang Dihadapi{' '}
-          </h1>
-          <div className="w-full">
-            <input
-              name="masalahDihadapi"
-              placeholder="Masalah yang dihadapi..."
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.masalahDihadapi}
-              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
-            />
-          </div>
-          <h1 className="mb-3 font-semibold text-lg border-b-2">Konsultasi</h1>
-          <div className="w-full">
-            <input
-              name="konsultasi"
-              placeholder="Konsultasi..."
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.konsultasi}
-              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
-            />
-          </div>
-
-          <h1 className="mb-3 font-semibold text-lg border-b-2">
-            Pengobatan / Tindakan
+            Kondisi Tambahan (KT)
           </h1>
           <div className="w-full">
             <textarea
               rows={3}
-              name="pengobatanTindakan"
-              placeholder="Pengobatan / Tindakan..."
+              name="kt"
+              placeholder="Kondisi tambahan..."
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.pengobatanTindakan}
+              value={formik.values.kt}
               className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
             />
           </div>
 
           <h1 className="mb-3 font-semibold text-lg border-b-2">
-            Perjalanan Penyakit Selama Pengobatan : Komplikasi
+            Riwayat Penyakit Dahulu (RPD)
           </h1>
           <div className="w-full">
             <textarea
               rows={3}
-              name="perjalananPeyakit"
-              placeholder="Perjalanan Penyakit Selama Pengobatan : Komplikasi..."
+              name="rpd"
+              placeholder="Riwayat penyakit dahulu..."
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.perjalananPeyakit}
+              value={formik.values.rpd}
               className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
             />
           </div>
 
           <h1 className="mb-3 font-semibold text-lg border-b-2">
-            Keadaan Waktu Keluar Puskesmas
+            Riwayat Pengobatan Obat (RPO)
           </h1>
           <div className="w-full">
-            <input
-              name="keadaanKeluarRS"
-              placeholder="Keadaan Waktu Keluar Puskesmas..."
+            <textarea
+              rows={3}
+              name="rpo"
+              placeholder="Riwayat pengobatan obat..."
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.keadaanKeluarRS}
-              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
-            />
-          </div>
-
-          <h1 className="mb-3 font-semibold text-lg border-b-2">Prognosa</h1>
-          <div className="w-full">
-            <input
-              name="prognosa"
-              placeholder="Prognosa..."
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.prognosa}
+              value={formik.values.rpo}
               className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
             />
           </div>
 
           <h1 className="mb-3 font-semibold text-lg border-b-2">
-            Sebab Meninggal
+            Riwayat Penyakit Keluarga (RPK)
           </h1>
           <div className="w-full">
-            <input
-              name="sebabMeninggal"
-              placeholder="Sebab Meninggal..."
+            <textarea
+              rows={3}
+              name="rpk"
+              placeholder="Riwayat penyakit keluarga..."
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.sebabMeninggal}
+              value={formik.values.rpk}
+              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+            />
+          </div>
+
+          <h1 className="mb-3 font-semibold text-lg border-b-2">Tanda Vital</h1>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <h1 className="font-medium text-[#B9B9B9] text-sm">TD (mmHg)</h1>
+              <input
+                name="td"
+                placeholder="Tekanan Darah..."
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.td}
+                className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+              />
+            </div>
+            <div>
+              <h1 className="font-medium text-[#B9B9B9] text-sm">
+                HR (x/menit)
+              </h1>
+              <input
+                name="hr"
+                placeholder="Heart Rate..."
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.hr}
+                className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+              />
+            </div>
+            <div>
+              <h1 className="font-medium text-[#B9B9B9] text-sm">
+                RR (x/menit)
+              </h1>
+              <input
+                name="rr"
+                placeholder="Respiratory Rate..."
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.rr}
+                className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+              />
+            </div>
+            <div>
+              <h1 className="font-medium text-[#B9B9B9] text-sm">T (°C)</h1>
+              <input
+                name="t"
+                placeholder="Suhu Tubuh..."
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.t}
+                className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+              />
+            </div>
+            <div>
+              <h1 className="font-medium text-[#B9B9B9] text-sm">TB (cm)</h1>
+              <input
+                name="tb"
+                placeholder="Tinggi Badan..."
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.tb}
+                className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+              />
+            </div>
+            <div>
+              <h1 className="font-medium text-[#B9B9B9] text-sm">BB (kg)</h1>
+              <input
+                name="bb"
+                placeholder="Berat Badan..."
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.bb}
+                className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+              />
+            </div>
+          </div>
+
+          <h1 className="mb-3 font-semibold text-lg border-b-2">
+            Pemeriksaan Fisik
+          </h1>
+          <div className="w-full">
+            <textarea
+              rows={3}
+              name="pemeriksaanFisik"
+              placeholder="Hasil pemeriksaan fisik..."
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.pemeriksaanFisik}
               className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
             />
           </div>
 
           <h1 className="mb-3 font-semibold text-lg border-b-2">
-            Usul Tindak Lanjut
+            Catatan Keperawatan
           </h1>
           <div className="w-full">
-            <input
-              name="usulTidakLanjut"
-              placeholder="Usul Tindak Lanjut..."
+            <textarea
+              rows={3}
+              name="catatanKeperawatan"
+              placeholder="Catatan keperawatan..."
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.usulTidakLanjut}
+              value={formik.values.catatanKeperawatan}
+              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+            />
+          </div>
+
+          <h1 className="mb-3 font-semibold text-lg border-b-2">
+            Diagnosa Penyakit
+          </h1>
+          <div className="w-full">
+            <textarea
+              rows={3}
+              name="diagnosaPenyakit"
+              placeholder="Diagnosa penyakit..."
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.diagnosaPenyakit}
+              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+            />
+          </div>
+
+          <h1 className="mb-3 font-semibold text-lg border-b-2">
+            Terapi (Therapy)
+          </h1>
+          <div className="w-full">
+            <textarea
+              rows={3}
+              name="therapy"
+              placeholder="Terapi yang diberikan..."
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.therapy}
+              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+            />
+          </div>
+
+          <h1 className="mb-3 font-semibold text-lg border-b-2">
+            Evaluasi Subjektif Objektif (ESO)
+          </h1>
+          <div className="w-full">
+            <textarea
+              rows={3}
+              name="eso"
+              placeholder="Evaluasi subjektif objektif..."
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.eso}
+              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+            />
+          </div>
+
+          <h1 className="mb-3 font-semibold text-lg border-b-2">
+            Rencana Pemeriksaan Penunjang
+          </h1>
+          <div className="w-full">
+            <textarea
+              rows={3}
+              name="rencanaPemeriksaanPenunjang"
+              placeholder="Rencana pemeriksaan penunjang..."
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.rencanaPemeriksaanPenunjang}
+              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+            />
+          </div>
+
+          <h1 className="mb-3 font-semibold text-lg border-b-2">Rencana Edukasi</h1>
+          <div className="w-full">
+            <select
+              name="Edukasi"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.Edukasi}
+              className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+            >
+              <option value="POLAMAKAN">Pola Makan</option>
+              <option value="POLAAKTIFITAS">Pola Aktifitas</option>
+            </select>
+          </div>
+
+          <h1 className="mb-3 font-semibold text-lg border-b-2">
+            Rencana Rujukan
+          </h1>
+          <div className="w-full">
+            <textarea
+              rows={3}
+              name="rencanaRujukan"
+              placeholder="Rencana rujukan..."
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.rencanaRujukan}
               className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
             />
           </div>

@@ -10,7 +10,7 @@ const api = async (req, res) => {
   }
   try {
     const response = await ClientRequest.CreateRekamMedis(data, token);
-    res.status(200).send(response.data.message);
+    res.status(200).send('Sukses Create Rekam Medis');
   } catch (error) {
     res.status(500).json({ error: error.response.data });
   }

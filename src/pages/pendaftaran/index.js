@@ -92,17 +92,17 @@ export default function Pendaftaran({ user }) {
       ),
     },
     {
-      header: 'Tanggal Berobat',
-      accessorKey: 'createdAt',
+      header: 'Tanggal Kunjungan',
+      accessorKey: 'tanggalKunjungan',
       cell: ({ row }) => (
-        <p>{moment(row.original.createdAt).format('DD-MM-YYYY')}</p>
+        <p>{moment(row.original.tanggalKunjungan).format('DD-MM-YYYY')}</p>
       ),
     },
-    { header: 'Keluhan', accessorKey: 'lamaPenyakit' },
-    { header: 'Diagnosa Akhir', accessorKey: 'diagnosaAkhir' },
+    { header: 'Keluhan', accessorKey: 'subjektif' },
+    { header: 'Diagnosa Penyakit', accessorKey: 'diagnosaPenyakit' },
     {
-      header: 'Keadaan Waktu Keluar Puskesmas',
-      accessorKey: 'keadaanKeluarRS',
+      header: 'Catatan Keperawatan',
+      accessorKey: 'catatanKeperewatan',
     },
     {
       header: 'Aksi',
@@ -130,7 +130,6 @@ export default function Pendaftaran({ user }) {
   const [idPasien, setIdPasien] = useState('');
   const [refresh, setRefresh] = useState(false);
   const router = useRouter();
-
   const formik = useFormik({
     initialValues: {
       namaPasien: '-',
@@ -389,12 +388,16 @@ export default function Pendaftaran({ user }) {
                   <h1 className="text-base text-black font-medium md:text-end">
                     {dataDetailPatient?.riwayatPenyakit}
                   </h1>
-                </div>
+                </div>cz
+              </div>
+              
+              <div className='flex items-center justify-between border-b-2'>
+                <h1 className="mb-3 font-semibold text-lg">
+                  Riwayat Berobat / Rekam Medis
+                </h1>
+                <button onClick={() => router.push(`/rekam-medis?idPasien=${dataDetailPatient.id}`)} className='underline font-semibold'>Tambah Rekam Medis</button>
               </div>
 
-              <h1 className="mb-3 font-semibold text-lg border-b-2">
-                Riwayat Berobat / Rekam Medis
-              </h1>
               <div className="mb-10">
                 <Table
                   data={dataRekamMedisPasien}

@@ -13,7 +13,7 @@ const api = async (req, res) => {
 
   try {
     const response = await ClientRequest.UpdatePatient(data, id, token);
-    res.status(200).send('Success Update Participant');
+    res.status(200).send('Success Update Pasien');
   } catch (error) {
     res.status(500).json({ error: error.response.data.message });
   }

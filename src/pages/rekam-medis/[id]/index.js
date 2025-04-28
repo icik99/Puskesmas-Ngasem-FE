@@ -9,8 +9,8 @@ import handleImage from '@/utils/handleImage';
 
 export default function DetailRekamMedis({ listRekamMedis }) {
   const printRef = useRef(null);
+  console.log(listRekamMedis)
 
-  // Fungsi untuk menangani pencetakan elemen tertentu
   const handlePrint = () => {
     const printContent = printRef.current.innerHTML;
     const originalContent = document.body.innerHTML;
@@ -49,89 +49,183 @@ export default function DetailRekamMedis({ listRekamMedis }) {
             </h1>
           </div>
         </div>
-        <table className="w-full border-collapse  border-gray-300">
+
+        <table className="w-full border-collapse border-gray-300 mt-4">
           <tbody>
             <tr>
-              <td className="border px-4 py-2 font-semibold">Nama Pasien</td>
-              <td className="border px-4 py-2">{listRekamMedis.pasien}</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2 font-semibold">TTL</td>
-              <td className="border px-4 py-2">{listRekamMedis.TTL}</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2 font-semibold">Alamat</td>
-              <td className="border px-4 py-2">{listRekamMedis.alamat}</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2 font-semibold">Lama Penyakit</td>
+              <td className="border px-4 py-2 font-semibold w-1/4">
+                Nama Pasien
+              </td>
               <td className="border px-4 py-2">
-                {listRekamMedis.lamaPenyakit}
+                {listRekamMedis.namaPasien || '-'}
               </td>
             </tr>
             <tr>
               <td className="border px-4 py-2 font-semibold">
-                Hasil Pemeriksaan
+                Tanggal Kunjungan
               </td>
               <td className="border px-4 py-2">
-                <p>Fisik: {listRekamMedis.fisik}</p>
-                <p>Laboratorium: {listRekamMedis.laboratorium}</p>
-                <p>Radiologi: {listRekamMedis.radiologi}</p>
-                <p>Lain-lain: {listRekamMedis.lain_lainHasilPemeriksaan}</p>
+                {moment(listRekamMedis.tanggalKunjungan).format('DD MMMM YYYY')}
               </td>
             </tr>
             <tr>
-              <td className="border px-4 py-2 font-semibold">Diagnosa Akhir</td>
+              <td className="border px-4 py-2 font-semibold">Dokter</td>
               <td className="border px-4 py-2">
-                {listRekamMedis.diagnosaAkhir}
-              </td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2 font-semibold">
-                Pengobatan/Tindakan
-              </td>
-              <td className="border px-4 py-2">
-                {listRekamMedis.pengobatanTindakan}
-              </td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2 font-semibold">
-                Keadaan Waktu Keluar Puskesmas
-              </td>
-              <td className="border px-4 py-2">
-                {listRekamMedis.keadaanKeluarRS}
-              </td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2 font-semibold">Prognosa</td>
-              <td className="border px-4 py-2">{listRekamMedis.prognosa}</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2 font-semibold">
-                Usul Tindak Lanjut
-              </td>
-              <td className="border px-4 py-2">
-                {listRekamMedis.usulTidakLanjut}
+                {listRekamMedis.namaDokter || '-'}
               </td>
             </tr>
           </tbody>
         </table>
-        <div className="flex items-center justify-end mt-5">
-          <div>
+
+        <h2 className="text-lg font-semibold mt-6 mb-2">Keluhan Utama</h2>
+        <table className="w-full border-collapse border-gray-300">
+          <tbody>
+            <tr>
+              <td className="border px-4 py-2">
+                {listRekamMedis.subjektif || '-'}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 className="text-lg font-semibold mt-6 mb-2">Pemeriksaan</h2>
+        <table className="w-full border-collapse border-gray-300">
+          <tbody>
+            <tr>
+              <td className="border px-4 py-2 font-semibold w-1/4">
+                Keadaan Umum (KU)
+              </td>
+              <td className="border px-4 py-2">{listRekamMedis.ku || '-'}</td>
+            </tr>
+            <tr>
+              <td className="border px-4 py-2 font-semibold">
+                Kondisi Tambahan (KT)
+              </td>
+              <td className="border px-4 py-2">{listRekamMedis.kt || '-'}</td>
+            </tr>
+            <tr>
+              <td className="border px-4 py-2 font-semibold">Tanda Vital</td>
+              <td className="border px-4 py-2">
+                <p>TD: {listRekamMedis.td || '-'}</p>
+                <p>HR: {listRekamMedis.hr || '-'}</p>
+                <p>RR: {listRekamMedis.rr || '-'}</p>
+                <p>Suhu: {listRekamMedis.t || '-'}</p>
+                <p>TB: {listRekamMedis.tb || '-'}</p>
+                <p>BB: {listRekamMedis.bb || '-'}</p>
+              </td>
+            </tr>
+            <tr>
+              <td className="border px-4 py-2 font-semibold">
+                Pemeriksaan Fisik
+              </td>
+              <td className="border px-4 py-2">
+                {listRekamMedis.pemeriksaanFisik || '-'}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 className="text-lg font-semibold mt-6 mb-2">Riwayat</h2>
+        <table className="w-full border-collapse border-gray-300">
+          <tbody>
+            <tr>
+              <td className="border px-4 py-2 font-semibold w-1/4">
+                Riwayat Penyakit Dahulu (RPD)
+              </td>
+              <td className="border px-4 py-2">{listRekamMedis.rpd || '-'}</td>
+            </tr>
+            <tr>
+              <td className="border px-4 py-2 font-semibold">
+                Riwayat Pengobatan Obat (RPO)
+              </td>
+              <td className="border px-4 py-2">{listRekamMedis.rpo || '-'}</td>
+            </tr>
+            <tr>
+              <td className="border px-4 py-2 font-semibold">
+                Riwayat Penyakit Keluarga (RPK)
+              </td>
+              <td className="border px-4 py-2">{listRekamMedis.rpk || '-'}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 className="text-lg font-semibold mt-6 mb-2">Diagnosa & Terapi</h2>
+        <table className="w-full border-collapse border-gray-300">
+          <tbody>
+            <tr>
+              <td className="border px-4 py-2 font-semibold w-1/4">
+                Diagnosa Penyakit
+              </td>
+              <td className="border px-4 py-2">
+                {listRekamMedis.diagnosaPenyakit || '-'}
+              </td>
+            </tr>
+            <tr>
+              <td className="border px-4 py-2 font-semibold">Terapi</td>
+              <td className="border px-4 py-2">
+                {listRekamMedis.therapy || '-'}
+              </td>
+            </tr>
+            <tr>
+              <td className="border px-4 py-2 font-semibold">Evaluasi (ESO)</td>
+              <td className="border px-4 py-2">{listRekamMedis.eso || '-'}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 className="text-lg font-semibold mt-6 mb-2">
+          Rencana Tindak Lanjut
+        </h2>
+        <table className="w-full border-collapse border-gray-300">
+          <tbody>
+            <tr>
+              <td className="border px-4 py-2 font-semibold w-1/4">
+                Pemeriksaan Penunjang
+              </td>
+              <td className="border px-4 py-2">
+                {listRekamMedis.rencanaPemeriksaanPenunjang || '-'}
+              </td>
+            </tr>
+            <tr>
+              <td className="border px-4 py-2 font-semibold">Edukasi</td>
+              <td className="border px-4 py-2">
+                {listRekamMedis.rencanaEdukasi === 'POLAMAKAN' ? 'Pola Makan' : 'Pola Hidup'}
+              </td>
+            </tr>
+            <tr>
+              <td className="border px-4 py-2 font-semibold">
+                Rencana Rujukan
+              </td>
+              <td className="border px-4 py-2">
+                {listRekamMedis.rencanaRujukan || '-'}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div className="flex items-center justify-end mt-8">
+          <div className="text-center">
             <p>
               Ngasem, {moment(listRekamMedis?.createdAt).format('DD MMMM YYYY')}
             </p>
             <p>Dokter yang merawat:</p>
-            <Image
-              src={handleImage(listRekamMedis?.ettd)}
-              width={150}
-              height={50}
-              alt="TTD Dokter"
-            />
+            <div className="mt-4">
+              {listRekamMedis.ettd && (
+                <Image
+                  src={handleImage(listRekamMedis.ettd)}
+                  width={150}
+                  height={50}
+                  alt="TTD Dokter"
+                />
+              )}
+              <p className="mt-2 font-semibold">
+                {listRekamMedis.namaDokter || '-'}
+              </p>
+            </div>
           </div>
         </div>
       </div>
-      {/* Tombol Cetak */}
+
       <div className="flex justify-end mt-4 print:hidden">
         <button
           onClick={handlePrint}
@@ -149,6 +243,7 @@ export const getServerSideProps = withSession(async ({ req, query }) => {
   const { id } = query;
   const user = req.session?.user || [];
   const isLoggedIn = !!accessToken;
+
   if (!isLoggedIn) {
     return {
       redirect: {
@@ -164,7 +259,7 @@ export const getServerSideProps = withSession(async ({ req, query }) => {
     const res = await ClientRequest.GetRekamMedisById(accessToken, id);
     dataRekamMedis = res.data.results.data || {};
   } catch (error) {
-    console.error('Error fetching RekamMedis data');
+    console.error('Error fetching RekamMedis data:', error);
   }
 
   return {
