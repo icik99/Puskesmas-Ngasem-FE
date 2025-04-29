@@ -50,8 +50,8 @@ export default function Layout({ children }) {
       const valueName = localStorage.getItem('NAME-PUSKESMAS-NGASEM');
 
       setStoredValue({
-        role: valueRole,
-        name: valueName,
+        role: valueRole ? valueRole : '-',
+        name: valueName ? valueName : '-',
       });
     }
   }, []);
