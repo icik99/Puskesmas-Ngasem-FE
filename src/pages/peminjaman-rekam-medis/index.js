@@ -31,6 +31,7 @@ export default function PeminjamanRekamMedis({
   } = useFetchData('/api/peminjaman-rekam-medis/get');
 
   console.log(dataPeminjamanRekamMedis);
+  console.log(listRekamMedis);
   const kolomPeminjamanRekamMedis = [
     {
       header: 'No.',
@@ -71,7 +72,7 @@ export default function PeminjamanRekamMedis({
       ),
     },
     { header: 'Keluhan', accessorKey: 'subjektif' },
-    { header: 'Diagnosa Akhir', accessorKey: 'diagnosaAkhir' },
+    { header: 'Diagnosa Penyakit', accessorKey: 'diagnosaPenyakit' },
     {
       header: 'Status Peminjaman',
       accessorKey: 'StatusPeminjaman',
@@ -437,8 +438,8 @@ export default function PeminjamanRekamMedis({
                   <option value="">Rekam Medis yang ingin dipinjam...</option>
                   {listRekamMedis.map((item, idx) => (
                     <option key={idx} value={item.id}>
-                      {item?.namaPasien} - Tgl Periksa:
-                      {moment(item?.createdAt).format('DD MMMM YYYY')}
+                      {item?.namaPasien} - Tanggal Periksa: {""}
+                      {moment(item?.tanggalKunjungan).format('DD MMMM YYYY')}
                     </option>
                   ))}
                 </select>

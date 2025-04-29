@@ -92,17 +92,17 @@ export default function KiupPasien({ user }) {
       ),
     },
     {
-      header: 'Tanggal Berobat',
-      accessorKey: 'createdAt',
+      header: 'Tanggal Kunjungan',
+      accessorKey: 'tanggalKunjungan',
       cell: ({ row }) => (
-        <p>{moment(row.original.createdAt).format('DD-MM-YYYY')}</p>
+        <p>{moment(row.original.tanggalKunjungan).format('DD-MM-YYYY')}</p>
       ),
     },
-    { header: 'Keluhan', accessorKey: 'lamaPenyakit' },
-    { header: 'Diagnosa Akhir', accessorKey: 'diagnosaAkhir' },
+    { header: 'Keluhan', accessorKey: 'subjektif' },
+    { header: 'Diagnosa Penyakit', accessorKey: 'diagnosaPenyakit' },
     {
-      header: 'Keadaan Waktu Keluar Puskesmas',
-      accessorKey: 'keadaanKeluarRS',
+      header: 'Catatan Keperawatan',
+      accessorKey: 'catatanKeperewatan',
     },
     {
       header: 'Aksi',
@@ -175,7 +175,6 @@ export default function KiupPasien({ user }) {
       if (values.NIK && !/^\d+$/.test(values.NIK)) {
         errors.NIK = 'Field NIK harus berupa angka';
       }
-
 
       return errors;
     },
@@ -286,7 +285,7 @@ export default function KiupPasien({ user }) {
 
   return (
     <div>
-      <MetaHead title={'Pendaftaran | Puskesmas Ngasem'} />
+      <MetaHead title={'KIUP Pasien | Puskesmas Ngasem'} />
       <Modal
         activeModal={showModalDetail}
         title={'Detail Pasien'}
@@ -982,17 +981,9 @@ export default function KiupPasien({ user }) {
         submitButton={deletePatient}
       />
       <Navbar
-        tittlePage={'Pendaftaran'}
-        subTittlePage={'Pendaftaran Pasien dan Pembuatan Rekam Medis'}
+        tittlePage={'KIUP Pasien'}
+        subTittlePage={'List Pasien Terdaftar'}
       />
-      {user.role !== 'DOKTER' && (
-        <button
-          onClick={() => router.push('/rekam-medis')}
-          className="bg-[#072B2E] text-white font-semibold rounded-[5px] py-[6px] px-[15px] mb-3"
-        >
-          Tambah Rekam Medis
-        </button>
-      )}
       <div className="mb-10">
         <TablePagination
           data={dataPatient}
@@ -1002,17 +993,6 @@ export default function KiupPasien({ user }) {
           setSearch={setSearchPatient}
           debouncedFetchData={debouncedFetchDataPatient}
           showSearchBar={true}
-          showAddButton={true}
-          tittleAddButton={
-            user.role === 'PETUGAS' || user.role === 'ADMIN'
-              ? 'Tambah Pasien Baru'
-              : 'Tambah Rekam Medis'
-          }
-          actionAddButton={
-            user.role !== 'DOKTER'
-              ? () => setShowModalAdd(!showModalAdd)
-              : () => router.push('/rekam-medis')
-          }
         />
       </div>
     </div>

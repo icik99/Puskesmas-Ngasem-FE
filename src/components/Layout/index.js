@@ -10,7 +10,7 @@ import { HiMenu } from 'react-icons/hi';
 import Image from 'next/image';
 import Link from 'next/link';
 import { IoIosPeople, IoMdAnalytics } from 'react-icons/io';
-import { MdOutlinePersonalInjury } from 'react-icons/md';
+import { MdOutlinePersonalInjury, MdPeopleOutline } from 'react-icons/md';
 import { BsClipboard2DataFill } from 'react-icons/bs';
 
 export default function Layout({ children }) {
@@ -95,6 +95,13 @@ export default function Layout({ children }) {
                     label: 'Pendaftaran',
                     icon: (
                       <MdOutlinePersonalInjury className="text-3xl text-blue-700" />
+                    ),
+                  },
+                  {
+                    href: '/kiup-pasien',
+                    label: 'KIUP Pasien',
+                    icon: (
+                      <MdPeopleOutline  className="text-3xl text-blue-700" />
                     ),
                   },
                   ...(storedValue?.role === 'ADMIN' ||

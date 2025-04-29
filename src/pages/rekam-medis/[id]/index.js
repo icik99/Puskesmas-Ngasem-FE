@@ -106,6 +106,7 @@ export default function DetailRekamMedis({ listRekamMedis }) {
             <tr>
               <td className="border px-4 py-2 font-semibold">Tanda Vital</td>
               <td className="border px-4 py-2">
+                <p>Vital Sign Sensorium: {listRekamMedis.vitalSignSensorium || '-'}</p>
                 <p>TD: {listRekamMedis.td || '-'}</p>
                 <p>HR: {listRekamMedis.hr || '-'}</p>
                 <p>RR: {listRekamMedis.rr || '-'}</p>

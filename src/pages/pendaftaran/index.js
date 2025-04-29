@@ -56,16 +56,16 @@ export default function Pendaftaran({ user }) {
         <>
           <div className="flex items-center gap-2 justify-center">
             <button
-              onClick={() => openModalEdit(row.original.id)}
-              className="text-xl text-[#072B2E]"
-            >
-              <BiSolidPencil />
-            </button>
-            <button
               onClick={() => openModalDetail(row.original.id)}
               className="text-xl text-[#072B2E]"
             >
               <IoEye />
+            </button>
+            <button
+              onClick={() => openModalEdit(row.original.id)}
+              className="text-xl text-[#072B2E]"
+            >
+              <BiSolidPencil />
             </button>
             <button
               onClick={() => openModalDelete(row.original.id)}
