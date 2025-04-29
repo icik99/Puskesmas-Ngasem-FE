@@ -4,6 +4,7 @@ import ClientRequest from '@/utils/clientApiService';
 import { withSession } from '@/utils/sessionWrapper';
 import axios from 'axios';
 import { useFormik } from 'formik';
+import moment from 'moment';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import toast from 'react-hot-toast';
@@ -14,6 +15,7 @@ export default function Create({
   listDokter,
   listRekamMedis,
 }) {
+  console.log(listRekamMedis)
   const router = useRouter();
   const idRekamMedis = router.query.id;
   const idPasien = router.query.idPasien;
@@ -171,7 +173,7 @@ export default function Create({
               name="tanggalKunjungan"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.tanggalKunjungan}
+              value={moment(formik.values.tanggalKunjungan).format('YYYY-MM-DD')}
               className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
             />
           </div>

@@ -64,18 +64,14 @@ export default function PeminjamanRekamMedis({
       cell: ({ row }) => (
         <p>
           {moment(row.original.tanggalDikembalikan).format(
-            'DD MMMM YYYY | HH:MM'
+            'DD MMMM YYYY | HH:mm'
           )}{' '}
           WIB
         </p>
       ),
     },
-    { header: 'Diagnosa Akhir', accessorKey: 'DiagnosaAkhir' },
-    { header: 'Pengobatan / Tindakan', accessorKey: 'Pengobatan' },
-    {
-      header: 'Keadaan Waktu Keluar Puskesmas',
-      accessorKey: 'KeadaanWaktuKeluarRS',
-    },
+    { header: 'Keluhan', accessorKey: 'subjektif' },
+    { header: 'Diagnosa Akhir', accessorKey: 'diagnosaAkhir' },
     {
       header: 'Status Peminjaman',
       accessorKey: 'StatusPeminjaman',

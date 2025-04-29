@@ -43,11 +43,11 @@ export default function AnalisisRekamMedis({ user }) {
       header: 'Tanggal Berobat',
       accessorKey: 'createdAt',
       cell: ({ row }) => (
-        <p>{moment(row.original.createdAt).format('DD-MM-YYYY')}</p>
+        <p>{moment(row.original.tanggalKunjungan).format('DD-MM-YYYY')}</p>
       ),
     },
     { header: 'Nama Pasien', accessorKey: 'Pasiens.namaLengkap' },
-    { header: 'Keluhan', accessorKey: 'lamaPenyakit' },
+    { header: 'Keluhan', accessorKey: 'subjektif' },
     {
       header: 'Aksi',
       cell: ({ row }) => (
