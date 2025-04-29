@@ -45,6 +45,7 @@ const api = async (req, res) => {
     const response = await ClientRequest.CreateUser(formData, token);
     res.status(200).send(response.data.message);
   } catch (error) {
+    console.log(error.response.data)
     res.status(500).json({ error: error.response.data.message });
   }
 };
