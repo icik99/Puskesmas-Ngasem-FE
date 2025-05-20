@@ -120,7 +120,6 @@ export default function Pendaftaran({ user }) {
       ),
     },
   ];
-
   const [showModalAdd, setShowModalAdd] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);

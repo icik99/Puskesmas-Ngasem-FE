@@ -27,7 +27,6 @@ const api = async (req, res) => {
 
   try {
     let formData = new FormData();
-
     // Loop melalui data dan tambahkan ke FormData
     for (const key in data) {
       if (data.hasOwnProperty(key)) {
@@ -42,6 +41,7 @@ const api = async (req, res) => {
         }
       }
     }
+    
     const response = await ClientRequest.CreateUser(formData, token);
     res.status(200).send(response.data.message);
   } catch (error) {
