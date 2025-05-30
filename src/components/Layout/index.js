@@ -4,6 +4,7 @@ import Sidebar from '../Sidebar';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import smallLogo from '../../../public/logo.png';
+import backgroundLogo from '../../../public/bg.png';
 import { IoHome } from 'react-icons/io5';
 import { FaBookMedical, FaMapMarked, FaUser } from 'react-icons/fa';
 import { HiMenu } from 'react-icons/hi';
@@ -176,11 +177,12 @@ export default function Layout({ children }) {
             </header>
 
             <div className="flex-1 bg-white shadow-md rounded-lg mt-4 p-4 lg:p-6 relative overflow-hidden">
-              <Image
-                src={smallLogo}
+             <Image
+                src={backgroundLogo}
                 alt="Watermark"
-                className="absolute opacity-10 w-96 h-auto right-4 bottom-4 pointer-events-none select-none"
+                className="absolute top-1/2 left-1/2 w-full max-w-none -translate-x-1/2 -translate-y-1/2 opacity-10 h-screen object-fill  pointer-events-none select-none"
               />
+
               {children}
             </div>
           </main>

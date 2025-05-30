@@ -13,6 +13,8 @@ import { toNumber } from 'lodash';
 import moment from 'moment';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import Select from 'react-select';
+
 import toast from 'react-hot-toast';
 import { BiSolidPencil } from 'react-icons/bi';
 
@@ -31,7 +33,6 @@ export default function PeminjamanRekamMedis({
   } = useFetchData('/api/peminjaman-rekam-medis/get');
 
   console.log(dataPeminjamanRekamMedis);
-  console.log(listRekamMedis);
   const kolomPeminjamanRekamMedis = [
     {
       header: 'No.',
@@ -131,6 +132,26 @@ export default function PeminjamanRekamMedis({
   const [hasNotified, setHasNotified] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const router = useRouter()
+
+  const [selectedRekamMedis, setSelectedRekamMedis] = useState(null);
+  const [selectedEditRekamMedis, setSelectedEditRekamMedis] = useState(null);
+
+  // Format options untuk react-select
+  const rekamMedisOptions = listRekamMedis.map(item => ({
+    value: item.id,
+    label: `${item.namaPasien} - ${moment(item.tanggalKunjungan).format('DD MMMM YYYY')}`,
+    original: item
+  }));
+
+  const handleRekamMedisChange = (selectedOption) => {
+    setSelectedRekamMedis(selectedOption);
+    formik.setFieldValue('RekamMedis', selectedOption?.value || '');
+  };
+
+  const handleEditRekamMedisChange = (selectedOption) => {
+    setSelectedEditRekamMedis(selectedOption);
+    formik.setFieldValue('RekamMedis', selectedOption?.value || '');
+  };
 
   useEffect(() => {
     if (totalTerupdate > 0) {
@@ -294,7 +315,7 @@ export default function PeminjamanRekamMedis({
     },
   });
 
-  const openModalEdit = async (id) => {
+    const openModalEdit = async (id) => {
     setIdRekamMedis(id);
     setShowModalEdit(!showModalEdit);
     try {
@@ -311,7 +332,6 @@ export default function PeminjamanRekamMedis({
           'YYYY-MM-DDTHH:mm'
         )
       );
-
       formik.setFieldValue(
         'tanggalPeminjaman',
         moment(res.data.data.results.data.tanggalPeminjaman).format(
@@ -323,6 +343,12 @@ export default function PeminjamanRekamMedis({
         'RekamMedis',
         res.data.data.results.data.RiwayatPasiens.id
       );
+      
+      // Set selected rekam medis untuk edit
+      const selectedRm = rekamMedisOptions.find(
+        option => option.value === res.data.data.results.data.RiwayatPasiens.id
+      );
+      setSelectedEditRekamMedis(selectedRm);
     } catch (error) {}
   };
 
@@ -425,30 +451,27 @@ export default function PeminjamanRekamMedis({
                 )}
               </div>
               <div className="w-full">
-                <h1 className="font-medium text-[#B9B9B9] text-sm mb-[4px]">
-                  Rekam Medis
-                </h1>
-                <select
-                  name="RekamMedis"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.RekamMedis}
-                  className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
-                >
-                  <option value="">Rekam Medis yang ingin dipinjam...</option>
-                  {listRekamMedis.map((item, idx) => (
-                    <option key={idx} value={item.id}>
-                      {item?.namaPasien} - Tanggal Periksa: {""}
-                      {moment(item?.tanggalKunjungan).format('DD MMMM YYYY')}
-                    </option>
-                  ))}
-                </select>
-                {formik.touched.RekamMedis && formik.errors.RekamMedis && (
-                  <p className="text-xs font-medium text-red-500 ml-1">
-                    * {formik.errors.RekamMedis}
-                  </p>
-                )}
-              </div>
+    <h1 className="font-medium text-[#B9B9B9] text-sm mb-[4px]">
+      Rekam Medis
+    </h1>
+    <Select
+      name="RekamMedis"
+      options={rekamMedisOptions}
+      value={selectedRekamMedis}
+      onChange={handleRekamMedisChange}
+      onBlur={formik.handleBlur}
+      placeholder="Cari rekam medis..."
+      className="react-select-container"
+      classNamePrefix="react-select"
+      noOptionsMessage={() => "Tidak ada rekam medis yang ditemukan"}
+      isSearchable
+    />
+    {formik.touched.RekamMedis && formik.errors.RekamMedis && (
+      <p className="text-xs font-medium text-red-500 ml-1">
+        * {formik.errors.RekamMedis}
+      </p>
+    )}
+  </div>
               <div className="w-full">
                 <h1 className="font-medium text-[#B9B9B9] text-sm mb-[4px]">
                   Tanggal Peminjaman
@@ -571,21 +594,18 @@ export default function PeminjamanRekamMedis({
                 <h1 className="font-medium text-[#B9B9B9] text-sm mb-[4px]">
                   Rekam Medis
                 </h1>
-                <select
+                <Select
                   name="RekamMedis"
-                  onChange={formik.handleChange}
+                  options={rekamMedisOptions}
+                  value={selectedEditRekamMedis}
+                  onChange={handleEditRekamMedisChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.RekamMedis}
-                  className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
-                >
-                  <option value="">Rekam Medis yang ingin dipinjam...</option>
-                  {listRekamMedis.map((item, idx) => (
-                    <option key={idx} value={item.id}>
-                      {moment(item?.createdAt).locale('id').format('LL')} -{' '}
-                      {item?.namaPasien}
-                    </option>
-                  ))}
-                </select>
+                  placeholder="Cari rekam medis..."
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  noOptionsMessage={() => "Tidak ada rekam medis yang ditemukan"}
+                  isSearchable
+                />
                 {formik.touched.RekamMedis && formik.errors.RekamMedis && (
                   <p className="text-xs font-medium text-red-500 ml-1">
                     * {formik.errors.RekamMedis}

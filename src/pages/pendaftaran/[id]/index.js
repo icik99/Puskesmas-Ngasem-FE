@@ -33,6 +33,8 @@ export default function DetailPasien({ listPasien }) {
           <div className="text-center flex-1">
             <h2 className="text-[7pt] font-bold leading-tight m-0">PEMERINTAH KABUPATEN BOJONEGORO</h2>
             <h3 className="text-[6.5pt] font-bold leading-tight m-0">UPTD PUSKESMAS NGASEM</h3>
+            <h3 className="text-[7px] font-semibold">Jl. Kadarusman No.306 - Ngasem - Bojonegoro</h3>
+            <h3 className="text-[7px] font-semibold">085158759559</h3>
           </div>
         </div>
   
