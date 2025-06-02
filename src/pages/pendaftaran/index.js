@@ -987,7 +987,7 @@ export default function Pendaftaran({ user }) {
         tittlePage={'Pendaftaran'}
         subTittlePage={'Pendaftaran Pasien dan Pembuatan Rekam Medis'}
       />
-      {user.role !== 'DOKTER' && (
+      {(user.role !== 'DOKTER' || user.role !== 'PERAWAT' || user.role !== 'BIDAN') && (
         <button
           onClick={() => router.push('/rekam-medis')}
           className="bg-[#072B2E] text-white font-semibold rounded-[5px] py-[6px] px-[15px] mb-3"
@@ -1011,7 +1011,7 @@ export default function Pendaftaran({ user }) {
               : 'Tambah Rekam Medis'
           }
           actionAddButton={
-            user.role !== 'DOKTER'
+            user.role !== 'DOKTER' || user.role !== 'PERAWAT'|| user.role !== 'BIDAN' 
               ? () => setShowModalAdd(!showModalAdd)
               : () => router.push('/rekam-medis')
           }

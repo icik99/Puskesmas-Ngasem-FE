@@ -15,14 +15,13 @@ export default function Create({
   listDokter,
   listRekamMedis,
 }) {
-  console.log(listRekamMedis)
   const router = useRouter();
   const idRekamMedis = router.query.id;
   const idPasien = router.query.idPasien;
   const formik = useFormik({
     initialValues: {
       Dokter:
-        user.role === 'DOKTER' && !idRekamMedis
+        (user.role === 'DOKTER' || user.role === 'PERAWAT' || user.role === 'BIDAN')  && !idRekamMedis
           ? user.id
           : listRekamMedis.Dokter,
       pasien: !idRekamMedis ? idPasien : listRekamMedis.pasien,

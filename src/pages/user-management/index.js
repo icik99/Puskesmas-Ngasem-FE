@@ -181,7 +181,7 @@ export default function UserManagement({ user }) {
         res.data.data.results.data.password
       );
       formik.setFieldValue('role', res.data.data.results.data.role);
-      if (res.data.data.results.data.role === 'DOKTER' || res.data.data.results.data.role === 'PETUGAS') {
+      if (res.data.data.results.data.role === 'DOKTER' || res.data.data.results.data.role === 'PETUGAS' || res.data.data.results.data.role === 'PERAWAT' || res.data.data.results.data.role === 'BIDAN') {
         setIsUserDokter(true);
         formik.setFieldValue('eTTD', res.data.data.results.data.eTTD);
         setTtdImage(handleImage(res.data.data.results.data.eTTD));
@@ -215,7 +215,7 @@ export default function UserManagement({ user }) {
   const handleRoleChange = (e) => {
     const selectedRole = e.target.value;
     formik.handleChange(e);
-    setIsUserDokter(selectedRole === 'DOKTER' || selectedRole === 'PETUGAS');
+    setIsUserDokter(selectedRole === 'DOKTER' || selectedRole === 'PETUGAS' || selectedRole === 'PERAWAT' || selectedRole === 'BIDAN');
   };
 
   const handleImageUpload = (event) => {
@@ -360,6 +360,8 @@ export default function UserManagement({ user }) {
                   <option value="ADMIN">ADMIN</option>
                   <option value="PETUGAS">PETUGAS</option>
                   <option value="DOKTER">DOKTER</option>
+                  <option value="PERAWAT">PERAWAT</option>
+                  <option value="BIDAN">BIDAN</option>
                   {user.role === 'SUPERADMIN' && (
                     <option value="SUPERADMIN">SUPERADMIN</option>
                   )}

@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['localhost', 'sasn-companyprofile-fe.vercel.app', 'be.sasn.co.id', '103.127.99.108'],
+    domains: ['localhost', 'sasn-companyprofile-fe.vercel.app', '103.127.99.108'],
   },
 }
 
