@@ -21,6 +21,7 @@ import {
   FaUsers,
 } from 'react-icons/fa';
 import axios from 'axios';
+import MetaHead from '@/components/MetaHead';
 
 export default function Dashboard({ listCountDashboard, totalTerupdate }) {
   const [data, setData] = useState(null);
@@ -72,6 +73,7 @@ export default function Dashboard({ listCountDashboard, totalTerupdate }) {
   return (
     <>
       {contextHolder}
+      <MetaHead title={'Dashboard | Puskesmas Ngasem'} />
       <Navbar tittlePage="Dashboard" />
       <div className="min-h-screen px-4 py-6 md:px-8 bg-gray-50">
         {/* Chart Section */}

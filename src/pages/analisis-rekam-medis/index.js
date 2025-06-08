@@ -26,6 +26,13 @@ export default function AnalisisRekamMedis({ user }) {
     setSearch: setSearchAnalisisRekamMedis,
     debouncedFetchData: debouncedFetchDataAnalisisRekamMedis,
   } = useFetchData('/api/analisis-rekam-medis/get');
+  const {
+    data: dataRekamMedisLengkap,
+    pagination: paginationRekamMedisLengkap,
+    fetchData: fetchDataRekamMedisLengkap,
+    setSearch: setSearchRekamMedisLengkap,
+    debouncedFetchData: debouncedFetchDataRekamMedisLengkap,
+  } = useFetchData('/api/rekam-medis/get');
   const kolomAnalisisRekamMedis = [
     {
       header: 'No.',
@@ -40,7 +47,7 @@ export default function AnalisisRekamMedis({ user }) {
       ),
     },
     {
-      header: 'Tanggal Berobat',
+      header: 'Tanggal Kunjungan',
       accessorKey: 'createdAt',
       cell: ({ row }) => (
         <p>{moment(row.original.tanggalKunjungan).format('DD-MM-YYYY')}</p>
@@ -64,7 +71,51 @@ export default function AnalisisRekamMedis({ user }) {
       ),
     },
   ];
+    const kolomRekamMedisLengkap = [
+      {
+        header: 'No.',
+        cell: (row) => (
+          <h1>
+            {toNumber(row.row.index) +
+              1 +
+              (paginationRekamMedisLengkap.currentPage - 1) *
+                paginationRekamMedisLengkap.dataPerpages}
+            .
+          </h1>
+        ),
+      },
+      {
+        header: 'Tanggal Kunjungan',
+        accessorKey: 'tanggalKunjungan',
+        cell: ({ row }) => (
+          <p>{moment(row.original.tanggalKunjungan).format('DD-MM-YYYY')}</p>
+        ),
+      },
+    { header: 'Nama Pasien', accessorKey: 'namaPasien' },
+      { header: 'Keluhan', accessorKey: 'subjektif' },
+      { header: 'Diagnosa Penyakit', accessorKey: 'diagnosaPenyakit' },
+      {
+        header: 'Catatan Keperawatan',
+        accessorKey: 'catatanKeperewatan',
+      },
+      {
+        header: 'Aksi',
+        cell: ({ row }) => (
+          <>
+            <div className="flex items-center gap-2 justify-center">
+              <button
+                onClick={() => router.push(`/rekam-medis/${row.original.id}`)}
+                className="text-xl text-[#072B2E]"
+              >
+                <IoEye />
+              </button>
+            </div>
+          </>
+        ),
+      },
+    ];
 
+    console.log(dataRekamMedisLengkap)
   const [showModalAdd, setShowModalAdd] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
@@ -115,6 +166,25 @@ export default function AnalisisRekamMedis({ user }) {
           debouncedFetchData={debouncedFetchDataAnalisisRekamMedis}
           showSearchBar={true}
         />
+      </div>
+      <div className='border-t-2 border-slate-600 pt-4'>
+          <h1 className="text-3xl font-bold text-blue-700 md:mb-0 mb-3">
+            Rekam Medis
+          </h1>
+          <h2 className="text-xl font-semibold text-slate-500">
+            Daftar Seluruh Rekam Medis
+          </h2>
+          <div>
+            <TablePagination
+            data={dataRekamMedisLengkap}
+            columns={kolomRekamMedisLengkap}
+            fetchData={fetchDataRekamMedisLengkap}
+            pagination={paginationRekamMedisLengkap}
+            setSearch={setSearchRekamMedisLengkap}
+            debouncedFetchData={debouncedFetchDataRekamMedisLengkap}
+            showSearchBar={true}
+            />
+          </div>
       </div>
     </div>
   );
