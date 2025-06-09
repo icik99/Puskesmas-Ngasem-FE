@@ -15,7 +15,6 @@ const api = async (req, res) => {
   const start_date = req.query?.start_date || '';
   const end_date = req.query?.end_date || '';
 
-  console.log("query", req.query);
   try {
     const response = await ClientRequest.GetUser(token, keyword, limit, page, start_date, end_date);
     res.json({ data: response.data });

@@ -27,12 +27,23 @@ export default function AnalisisRekamMedis({ user }) {
     debouncedFetchData: debouncedFetchDataAnalisisRekamMedis,
   } = useFetchData('/api/analisis-rekam-medis/get');
   const {
-    data: dataRekamMedisLengkap,
+    data: rawDataRekamMedisLengkap,
     pagination: paginationRekamMedisLengkap,
     fetchData: fetchDataRekamMedisLengkap,
     setSearch: setSearchRekamMedisLengkap,
     debouncedFetchData: debouncedFetchDataRekamMedisLengkap,
   } = useFetchData('/api/rekam-medis/get');
+
+  const dataRekamMedisLengkap = (rawDataRekamMedisLengkap ?? []).filter((item) => {
+  return Object.entries(item).every(([key, value]) => {
+    // Mengabaikan pengecekan untuk field eTTd
+    if (key === 'eTTd') return true;
+    
+    // Cek nilai untuk field lainnya
+    return value !== null && value !== undefined && value !== '' && value !== 'null';
+  });
+});
+
   const kolomAnalisisRekamMedis = [
     {
       header: 'No.',
@@ -115,7 +126,7 @@ export default function AnalisisRekamMedis({ user }) {
       },
     ];
 
-    console.log(dataRekamMedisLengkap)
+    console.log(rawDataRekamMedisLengkap)
   const [showModalAdd, setShowModalAdd] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
@@ -141,6 +152,7 @@ export default function AnalisisRekamMedis({ user }) {
 
   useEffect(() => {
     fetchDataAnalisisRekamMedis();
+    fetchDataRekamMedisLengkap(); 
   }, [refresh]);
 
   return (
@@ -172,7 +184,7 @@ export default function AnalisisRekamMedis({ user }) {
             Rekam Medis
           </h1>
           <h2 className="text-xl font-semibold text-slate-500">
-            Daftar Seluruh Rekam Medis
+            Daftar Rekam Medis yang Telah Lengkap
           </h2>
           <div>
             <TablePagination
