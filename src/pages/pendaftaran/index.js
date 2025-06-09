@@ -139,6 +139,7 @@ export default function Pendaftaran({ user }) {
       noBPJS_KIS: '',
       kecamatan: '',
       kelurahan_desa: '',
+      kodeWilayah: '',
       NIK: '',
       usia: '',
       kabupaten: '',
@@ -179,7 +180,6 @@ export default function Pendaftaran({ user }) {
     },
     onSubmit: async (values) => {
       values.tanggalLahir = moment(values.tanggalLahir).format('MM-DD-YYYY');
-
       if (showModalAdd) {
         try {
           await toast.promise(axios.post(`/api/patient/create`, values), {
@@ -297,6 +297,7 @@ export default function Pendaftaran({ user }) {
                 Biodata Pasien
               </h1>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
                 <div>
                   <h1 className="font-medium text-[#B9B9B9] text-sm mb-[4px]">
                     Nama Lengkap
@@ -338,6 +339,14 @@ export default function Pendaftaran({ user }) {
                   </h1>
                   <h1 className="text-base text-black font-medium">
                     {dataDetailPatient?.usia} Tahun
+                  </h1>
+                </div>
+                <div>
+                  <h1 className="font-medium text-[#B9B9B9] text-sm mb-[4px] sm:text-end">
+                    Nomor Rekam Medis
+                  </h1>
+                  <h1 className="text-base text-black font-medium md:text-end">
+                    {dataDetailPatient?.nomerRM}
                   </h1>
                 </div>
               </div>
@@ -714,6 +723,44 @@ export default function Pendaftaran({ user }) {
                 Biodata Pasien
               </h1>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="w-full">
+                  <h1 className="font-medium text-[#B9B9B9] text-sm mb-[4px]">
+                    Kode Wilayah
+                  </h1>
+                  <select
+                    name="kodeWilayah"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik?.values?.kodeWilayah}
+                    className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
+                  >
+                    <option value="">Pilih Kode Wilayah...</option>
+                    <option value="01">01 - Desa Ngasem</option>
+                    <option value="02">02 - Desa Sendangharjo</option>
+                    <option value="03">03 - Desa Ngadiluwih</option>
+                    <option value="04">04 - Desa Kolong</option>
+                    <option value="05">05 - Desa Butoh</option>
+                    <option value="06">06 - Desa Trengguluhan</option>
+                    <option value="07">07 - Desa Setren</option>
+                    <option value="08">08 - Desa Mediyunan</option>
+                    <option value="09">09 - Desa Bandungrejo</option>
+                    <option value="10">10 - Desa Dukohkidul</option>
+                    <option value="11">11 - Desa Jampet</option>
+                    <option value="12">12 - Desa Tengger</option>
+                    <option value="13">13 - Desa Ngantru</option>
+                    <option value="14">14 - Desa Bareng</option>
+                    <option value="15">15 - Desa Wadang</option>
+                    <option value="16">16 - Desa Sambong</option>
+                    <option value="17">17 - Desa Jelu</option>
+                    <option value="18">18 - Luar Wilayah</option>
+                  </select>
+                  {formik.touched.kodeWilayah &&
+                    formik.errors.kodeWilayah && (
+                      <p className="text-xs font-medium text-red-500 ml-1">
+                        * {formik.errors.kodeWilayah}
+                      </p>
+                    )}
+                </div>
                 <div className="w-full">
                   <h1 className="font-medium text-[#B9B9B9] text-sm mb-[4px]">
                     Nama Lengkap

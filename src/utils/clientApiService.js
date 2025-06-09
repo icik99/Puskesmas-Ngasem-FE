@@ -104,8 +104,8 @@ class ClientRequest {
       },
     });
   };
-  static GetUser = (token, keyword, limit, page) => {
-    const path = `userManagementAdmin/getUser?page=${page}&limit=${limit}&keyword=${keyword}`;
+  static GetUser = (token, keyword, limit, page, start_date, end_date) => {
+    const path = `userManagementAdmin/getUser?page=${page}&limit=${limit}&keyword=${keyword}&start_date=${start_date}&end_date=${end_date}`;
     return request(`${this.urlAPI}${path}`, {
       method: 'GET',
       headers: {
@@ -202,8 +202,8 @@ class ClientRequest {
       },
     });
   };
-  static GetPatient = (token, keyword, limit, page) => {
-    const path = `pasienManagement/getPasien?page=${page}&limit=${limit}&namaPasien=${keyword}`;
+  static GetPatient = (token, keyword, limit, page, start_date, end_date) => {
+    const path = `pasienManagement/getPasien?page=${page}&limit=${limit}&namaPasien=${keyword}&start_date=${start_date}&end_date=${end_date}`;
     return request(`${this.urlAPI}${path}`, {
       method: 'GET',
       headers: {
@@ -252,8 +252,8 @@ class ClientRequest {
       },
     });
   };
-  static GetRekamMedis = (token, keyword, limit, page) => {
-    const path = `rekamMedis/getRekamMedis?page=${page}&limit=${limit}&namaPasien=${keyword}`;
+  static GetRekamMedis = (token, keyword, limit, page, start_date, end_date) => {
+    const path = `rekamMedis/getRekamMedis?page=${page}&limit=${limit}&namaPasien=${keyword}&start_date=${start_date}&end_date=${end_date}`;
     return request(`${this.urlAPI}${path}`, {
       method: 'GET',
       headers: {
@@ -313,8 +313,8 @@ class ClientRequest {
       },
     });
   };
-  static GetPeminjamanRekamMedis = (token, keyword, limit, page) => {
-    const path = `peminjamanRekamMedis/getPeminjamanRekamMedis?page=${page}&limit=${limit}&status=${keyword}`;
+  static GetPeminjamanRekamMedis = (token, keyword, limit, page, start_date, end_date) => {
+    const path = `peminjamanRekamMedis/getPeminjamanRekamMedis?page=${page}&limit=${limit}&status=${keyword}&start_date=${start_date}&end_date=${end_date}`;
     return request(`${this.urlAPI}${path}`, {
       method: 'GET',
       headers: {
@@ -333,8 +333,8 @@ class ClientRequest {
     });
   };
 
-  static GetDokter = (token, keyword, limit, page) => {
-    const path = `userManagementAdmin/getDokter?page=${page}&limit=${limit}&namaPasien=${keyword}`;
+  static GetDokter = (token, keyword, limit, page, start_date, end_date) => {
+    const path = `userManagementAdmin/getDokter?page=${page}&limit=${limit}&namaPasien=${keyword}&start_date=${start_date}&end_date=${end_date}`;
     return request(`${this.urlAPI}${path}`, {
       method: 'GET',
       headers: {

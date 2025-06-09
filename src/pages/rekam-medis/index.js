@@ -51,7 +51,7 @@ export default function Create({
         : listRekamMedis.rencanaPemeriksaanPenunjang,
       Edukasi: !idRekamMedis ? null : listRekamMedis.Edukasi,
       rencanaRujukan: !idRekamMedis ? null : listRekamMedis.rencanaRujukan,
-      vitalSignSensorium: !idRekamMedis ? null : listRekamMedis.vitalSignSensorium,
+      // vitalSignSensorium: !idRekamMedis ? null : listRekamMedis.vitalSignSensorium,
     },
     onSubmit: async (values) => {
       if (!idRekamMedis) {
@@ -270,7 +270,7 @@ export default function Create({
 
           <h1 className="mb-3 font-semibold text-lg border-b-2">Tanda Vital</h1>
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            {/* <div>
               <h1 className="font-medium text-[#B9B9B9] text-sm">Vital Sign Sensorium</h1>
               <input
                 name="vitalSignSensorium"
@@ -280,7 +280,7 @@ export default function Create({
                 value={formik.values.vitalSignSensorium}
                 className="px-[13px] py-[8px] rounded-[5px] border-2 outline-none w-full text-sm"
               />
-            </div>
+            </div> */}
             <div>
               <h1 className="font-medium text-[#B9B9B9] text-sm">TD (mmHg)</h1>
               <input

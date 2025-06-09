@@ -12,13 +12,17 @@ const api = async (req, res) => {
   const keyword = req.query.search === '' ? '' : req.query.search;
   const limit = req.query?.limit || '';
   const page = req.query?.page || '';
+  const start_date = req.query?.start_date || '';
+  const end_date = req.query?.end_date || '';
 
   try {
     const response = await ClientRequest.GetRekamMedis(
       token,
       keyword,
       limit,
-      page
+      page,
+      start_date,
+      end_date
     );
     res.json({ data: response.data });
   } catch (error) {

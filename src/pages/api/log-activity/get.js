@@ -12,9 +12,11 @@ const api = async (req, res) => {
   const keyword = req.query.search === '' ? '' : req.query.search;
   const limit = req.query?.limit || '';
   const page = req.query?.page || '';
+  const start_date = req.query?.start_date || '';
+  const end_date = req.query?.end_date || '';
 
   try {
-    const response = await ClientRequest.GetLogActivity(token, keyword, limit, page);
+    const response = await ClientRequest.GetLogActivity(token, keyword, limit, page, start_date, end_date);
     res.json({ data: response.data });
   } catch (error) {
     res.status(500).json({ error: error.response.data.message });
