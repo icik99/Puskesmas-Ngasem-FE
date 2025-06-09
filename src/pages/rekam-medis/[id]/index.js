@@ -54,6 +54,14 @@ export default function DetailRekamMedis({ listRekamMedis }) {
           <tbody>
             <tr>
               <td className="border px-4 py-2 font-semibold w-1/4">
+                No. Rekam Medis
+              </td>
+              <td className="border px-4 py-2">
+                {listRekamMedis.noRM || '-'}
+              </td>
+            </tr>
+            <tr>
+              <td className="border px-4 py-2 font-semibold w-1/4">
                 Nama Pasien
               </td>
               <td className="border px-4 py-2">
