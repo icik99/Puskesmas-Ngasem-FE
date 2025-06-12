@@ -104,6 +104,8 @@ export default function Create({
     }
   }, [formik.values.pasien]);
 
+  console.log(listPasien, "listPasien")
+
   return (
     <div>
       <MetaHead title={'Rekam Medis | Puskesmas Ngasem'} />
@@ -527,14 +529,14 @@ export const getServerSideProps = withSession(async ({ req, query }) => {
     console.error('Error fetching RekamMedis data');
   }
   try {
-    const res = await ClientRequest.GetPatient(accessToken, '', 10000, 1);
+    const res = await ClientRequest.GetPatient(accessToken, '', 10000, 1, '', '');
     dataPasien = res.data.results.data || [];
   } catch (error) {
     console.error('Error fetching pasien data');
   }
 
   try {
-    const res = await ClientRequest.GetDokter(accessToken, '', 10000, 1);
+    const res = await ClientRequest.GetDokter(accessToken, '', 10000, 1, '', '');
     dataDokter = res.data.results.data || [];
   } catch (error) {
     console.error('Error fetching dokter data');

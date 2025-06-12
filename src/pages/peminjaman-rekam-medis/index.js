@@ -823,7 +823,7 @@ export const getServerSideProps = withSession(async ({ req }) => {
   let checkStatusData = { totalTerupdate: 0 };
 
   try {
-    const res = await ClientRequest.GetRekamMedis(accessToken, '', 10000, 1);
+    const res = await ClientRequest.GetRekamMedis(accessToken, '', 10000, 1, '', '');
     dataRekamMedis = res.data.results.data || [];
   } catch (error) {
     console.error('Error fetching Rekam Medis data');
@@ -837,7 +837,7 @@ export const getServerSideProps = withSession(async ({ req }) => {
   }
 
   try {
-    const res = await ClientRequest.GetDokter(accessToken, '', 10000, 1);
+    const res = await ClientRequest.GetDokter(accessToken, '', 10000, 1, '', '');
     dataDokter = res.data.results.data || [];
   } catch (error) {
     console.error('Error fetching dokter data');
