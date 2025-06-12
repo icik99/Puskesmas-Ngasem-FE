@@ -9,7 +9,6 @@ import handleImage from '@/utils/handleImage';
 
 export default function DetailRekamMedis({ listRekamMedis }) {
   const printRef = useRef(null);
-  console.log(listRekamMedis)
 
   const handlePrint = () => {
     const printContent = printRef.current.innerHTML;

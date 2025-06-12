@@ -104,7 +104,6 @@ export default function Create({
     }
   }, [formik.values.pasien]);
 
-  console.log(listPasien, "listPasien")
 
   return (
     <div>

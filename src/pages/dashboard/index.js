@@ -31,7 +31,6 @@ export default function Dashboard({ listCountDashboard, totalTerupdate }) {
     try {
       const res = await axios.get('/api/cek-keterlambatan/get');
       setDataKeterlambatan(res.data.data);
-      console.log(res.data.data);
     } catch (error) {
       console.error('Failed Fetching Data');
     }

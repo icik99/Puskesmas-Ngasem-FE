@@ -126,7 +126,6 @@ export default function AnalisisRekamMedis({ user }) {
       },
     ];
 
-    console.log(rawDataRekamMedisLengkap)
   const [showModalAdd, setShowModalAdd] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);

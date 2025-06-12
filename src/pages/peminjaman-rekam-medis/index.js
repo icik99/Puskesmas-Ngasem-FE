@@ -32,7 +32,6 @@ export default function PeminjamanRekamMedis({
     debouncedFetchData: debouncedFetchDataPeminjamanRekamMedis,
   } = useFetchData('/api/peminjaman-rekam-medis/get');
 
-  console.log(dataPeminjamanRekamMedis);
   const kolomPeminjamanRekamMedis = [
     {
       header: 'No.',
@@ -225,7 +224,6 @@ export default function PeminjamanRekamMedis({
             'Tanggal pengembalian maksimal 2 hari dari tanggal peminjaman';
         }
       }
-      console.log(values)
       return errors;
     },
 
@@ -290,7 +288,6 @@ export default function PeminjamanRekamMedis({
           )
           .map((field) => [field, `Field wajib diisi`])
       );
-      console.log(errors);
       return errors;
     },
     onSubmit: async (values) => {
@@ -359,7 +356,6 @@ export default function PeminjamanRekamMedis({
       const res = await axios.get(
         `/api/peminjaman-rekam-medis/get-id?id=${idPeminjaman}`
       );
-      console.log(res.data.data.results.data, 'resgetbyid');
       formStatus.setFieldValue(
         'statusPeminjaman',
         res.data.data.results.data.RiwayatPasiens.statusPeminjaman
