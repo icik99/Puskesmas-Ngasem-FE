@@ -740,7 +740,7 @@ export default function Pendaftaran({ user }) {
                     <option value="03">03 - Desa Ngadiluwih</option>
                     <option value="04">04 - Desa Kolong</option>
                     <option value="05">05 - Desa Butoh</option>
-                    <option value="06">06 - Desa Trengguluhan</option>
+                    <option value="06">06 - Desa Trenggulunan </option>
                     <option value="07">07 - Desa Setren</option>
                     <option value="08">08 - Desa Mediyunan</option>
                     <option value="09">09 - Desa Bandungrejo</option>
